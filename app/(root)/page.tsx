@@ -2,28 +2,25 @@
 
 import { Button, ConfigProvider } from 'antd';
 import { theme } from '@/lib/theme/themeConfig';
-import { UserButton } from '@clerk/nextjs';
-import { useRef } from 'react';
-import { CreateStoreModal } from '@/component/modal/createStoreModal';
+import { useEffect, useRef, useState } from 'react';
+import './setupPage.scss';
+import { useStoreModal } from '@/hook/useStoreModal';
 
 const SetupPage = () => {
+    const onOpen = useStoreModal((state) => state.onOpen);
+    const isOpen = useStoreModal((state) => state.isOpen);
 
-  const createStoreModal = useRef<any>(null);
+    useEffect(() => {
+        if (!isOpen) {
+            onOpen();
+        }
+    }, [onOpen, isOpen]);
 
-  return (
-    <ConfigProvider theme={theme}>
-      <div className="setup-page-wrapper">
-        <UserButton afterSignOutUrl='/' />
-        <Button onClick={(e) => {
-          createStoreModal.current?.open();
-        }}>Add store</Button>
-        <CreateStoreModal
-          title='Create Store'
-          ref={createStoreModal}
-        />
-      </div>
-    </ConfigProvider>
-  );
+    return (
+        <div className='setup-page-wrapper'>
+            Root page
+        </div>
+    );
 };
 
 export default SetupPage;
