@@ -3,7 +3,6 @@
 import { Button, ConfigProvider } from 'antd';
 import { theme } from '@/lib/theme/themeConfig';
 import { useEffect, useRef, useState } from 'react';
-import './setupPage.scss';
 import { useStoreModal } from '@/hook/useStoreModal';
 
 const SetupPage = () => {
@@ -16,11 +15,7 @@ const SetupPage = () => {
         }
     }, [onOpen, isOpen]);
 
-    return (
-        <div className='setup-page-wrapper'>
-            Root page
-        </div>
-    );
+    return null;
 };
 
 export default SetupPage;
