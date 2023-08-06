@@ -5,7 +5,7 @@ import StyledComponentsRegistry from '../lib/AntdRegistry';
 import { ModalProvider } from '@/provider/modalProvider';
 import { ConfigProvider } from 'antd';
 import { theme } from '@/lib/theme/themeConfig';
-import './globals.css';
+import './globals.scss';
 
 const inter = Inter({ subsets: ['latin'] })
 

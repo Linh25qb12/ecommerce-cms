@@ -25,6 +25,7 @@ export const CreateStoreModal = () => {
                 placement: "bottomRight",
                 duration: 2
             })
+            window.location.assign(`/${response.data.id}`);
         } catch (error) {
             notification.error({
                 message: 'Somthing went wrong!',
@@ -41,6 +42,7 @@ export const CreateStoreModal = () => {
         <>
             <Modal
                 title='Create Store'
+                className="footless-modal"
                 centered
                 open={storeModal.isOpen}
                 onCancel={storeModal.onCancle}
