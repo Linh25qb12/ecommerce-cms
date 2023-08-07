@@ -24,14 +24,19 @@ export const Navbar = ({
     console.log(pathname.split('/').pop());
 
     const itemList = [
+        
+        {
+            label: <Link href={`/${params.storeId}`}><b>Overview</b></Link>,
+            key: 'dashboard',
+        },  
+        {
+            label: <Link href={`/${params.storeId}/billboard`}><b>Billboard</b></Link>,
+            key: 'billboard',
+        },  
         {
             label: <Link href={`/${params.storeId}/setting`}><b>Setting</b></Link>,
             key: 'setting',
         },
-        {
-            label: 'Navigation Two',
-            key: 'app',
-        },  
     ]
 
     return (
@@ -62,9 +67,8 @@ export const Navbar = ({
             />
             <Menu 
                 theme='dark'
-                selectedKeys={[pathname.split('/').pop() as string]}
-                style={{ flex: 'auto' }}
-                onClick={(e) => router.push(`/${params.storeId}/${e.key}`)}
+                selectedKeys={pathname.split('/')[2] ? [pathname.split('/')[2] as string] : ['dashboard']}
+                style={{ flex: 'auto', gap: 5 }}
                 mode="horizontal"
                 items={itemList}
             />
