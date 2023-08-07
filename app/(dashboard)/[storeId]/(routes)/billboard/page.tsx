@@ -1,6 +1,10 @@
+import { BillboardClient } from "./component/client";
+
 const BillboardPage = () => {
     return (
-        <>Billboard</>
+        <>
+            <BillboardClient />
+        </>
     );
 }
  

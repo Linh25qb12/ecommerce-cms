@@ -15,11 +15,12 @@
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
-    "antd": "^5.7.3",
+    "antd": "^5.8.2",
     "axios": "^1.4.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "next": "13.4.12",
+    "next-cloudinary": "^4.17.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sass": "^1.64.1",
@@ -28,5 +29,10 @@
   },
   "devDependencies": {
     "prisma": "^5.1.1"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
   }
 }
