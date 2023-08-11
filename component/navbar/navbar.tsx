@@ -21,8 +21,6 @@ export const Navbar = ({
     const pathname = usePathname();
     const storeModal = useStoreModal();
 
-    console.log(pathname.split('/').pop());
-
     const itemList = [
         
         {

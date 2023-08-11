@@ -1,0 +1,35 @@
+.custom-table-wrapper {
+    border: 1px solid #d3d3d3b7;
+    border-radius: 8px;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #4f91ff;
+    border-radius: 8px 8px 0 0;
+    color: white;
+}
+.ant-table-container {
+    height: 50vh;
+    .ant-table-thead {
+        background-color: #d3d3d3;
+
+        .ant-table-cell {
+            border-radius: 0 !important;
+            background-color: #d3d3d3;
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+    }
+
+}
+
+
+.ant-table-pagination {
+    margin: 0 !important;
+    padding: 15px !important;
+    background-color: #d3d3d3 !important;
+    border-radius: 0 0 8px 8px;
+}

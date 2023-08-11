@@ -101,56 +101,47 @@ export const BillboardForm = ({
 
     return (
         <Spin spinning={loading}>
-            <div className="setting-form-wrapper">
-                <div className="page-header-wrapper">
-                    <Heading title={billboardProp.title} description={billboardProp.description} />
-                    {initialData && <Button onClick={handleDeleteStore} size="large" danger type="primary"><DeleteOutlined /></Button>}
-                </div>
-                <Divider />
-                <Col span={4}>
-                    <Form
-                        form={createBillboardForm}
-                        requiredMark='optional'
-                        layout="vertical"
-                        name="basic"
-                        id="create-store-form"
-                        onFinish={onFinish}
-                        // onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                        initialValues={{
-                            labe: initialData ? initialData.label : '',
-                            imageUrl: initialData ? initialData.imageUrl : '',
-                        }}
-                    >
-                        <Form.Item
-                            label={<b>Billboard label</b>}
-                            name="label"
-                            initialValue={initialData?.label}
-                            rules={[{ required: true, message: 'Please input your billboard label!' }]}
-                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
-                        >
-                            <Input placeholder="Billboard label" size="large" />
-                        </Form.Item>
-                        <Form.Item
-                            label={<b>Billboard background</b>}
-                            name='imageUrl'
-                            rules={[{ required: true, message: 'Please select your billboard background!' }]}
-                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
-                        >
-                            <ImageUploader
-                                value={imageUrl}
-                                disabled={loading}
-                                onChange={(url) => onImageChange(url)}
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                {billboardProp.action}
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Col>
-            </div>
+            <Form
+                form={createBillboardForm}
+                requiredMark='optional'
+                layout="vertical"
+                name="basic"
+                id="create-store-form"
+                onFinish={onFinish}
+                // onFinishFailed={onFinishFailed}
+                autoComplete="off"
+                initialValues={{
+                    labe: initialData ? initialData.label : '',
+                    imageUrl: initialData ? initialData.imageUrl : '',
+                }}
+            >
+                <Form.Item
+                    label={<b>Billboard label</b>}
+                    name="label"
+                    initialValue={initialData?.label}
+                    rules={[{ required: true, message: 'Please input your billboard label!' }]}
+                    tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
+                >
+                    <Input placeholder="Billboard label" size="large" />
+                </Form.Item>
+                <Form.Item
+                    label={<b>Billboard background</b>}
+                    name='imageUrl'
+                    rules={[{ required: true, message: 'Please select your billboard background!' }]}
+                    tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
+                >
+                    <ImageUploader
+                        value={imageUrl}
+                        disabled={loading}
+                        onChange={(url) => onImageChange(url)}
+                    />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        {billboardProp.action}
+                    </Button>
+                </Form.Item>
+            </Form>
         </Spin>
     );
 }

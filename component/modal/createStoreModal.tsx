@@ -1,16 +1,10 @@
 'use client';
 
+import React, { useState } from "react";
 import { useStoreModal } from "@/hook/useStoreModal";
 import { Button, Form, Input, Modal, notification, Spin } from "antd";
-import React, { useState } from "react";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import axios from "axios";
-
-export type FieldType = {
-    username?: string;
-    password?: string;
-    remember?: string;
-};
 
 export const CreateStoreModal = () => {
     const storeModal = useStoreModal();
@@ -65,7 +59,7 @@ export const CreateStoreModal = () => {
                         // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <Form.Item<FieldType>
+                        <Form.Item
                             label={<b>Store name</b>}
                             name="name"
                             rules={[{ required: true, message: 'Please input your store name!' }]}
