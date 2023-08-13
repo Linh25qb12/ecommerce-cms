@@ -30,7 +30,11 @@ export const Navbar = ({
         {
             label: <Link href={`/${params.storeId}/billboard`}><b>Billboard</b></Link>,
             key: 'billboard',
-        },  
+        },
+        {
+            label: <Link href={`/${params.storeId}/category`}><b>Category</b></Link>,
+            key: 'category',
+        },    
         {
             label: <Link href={`/${params.storeId}/setting`}><b>Setting</b></Link>,
             key: 'setting',
