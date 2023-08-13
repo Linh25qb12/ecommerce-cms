@@ -3,10 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Input, Modal, Spin, Table, notification } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Billboard, Category } from '@prisma/client';
+import { Billboard, Category, Size } from '@prisma/client';
 import { format } from 'date-fns';
 import { EditOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
-import { EditCategoryModal } from './edit-category-modal';
+import { EditSizeModal } from './edit-size-modal';
 import './component.scss';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
@@ -26,21 +26,19 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
     );
 };
 
-export const CategoryTable = ({
+export const SizeTable = ({
     data,
-    billboardList
 }: {
-    data: Category[],
-    billboardList: Billboard[]
+    data: Size[],
 }) => {
-    const [dataSource, setDataSource] = useState<Category[]>(data);
-    const [selectValue, setSelectValue] = useState<Category>();
+    const [dataSource, setDataSource] = useState<Size[]>(data);
+    const [selectValue, setSelectValue] = useState<Size>();
     const editCategoryModalRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
 
-    const columns: ColumnsType<Category> = [
+    const columns: ColumnsType<Size> = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -48,9 +46,9 @@ export const CategoryTable = ({
             width: '30%',
         },
         {
-            title: 'Billboard',
-            dataIndex: ['billboard', 'label'],
-            key: 'billboardLabel',
+            title: 'Hex value',
+            dataIndex: 'value',
+            key: 'value',
             width: '30%',
         },
         {
@@ -75,7 +73,7 @@ export const CategoryTable = ({
                         <EditOutlined onClick={() => editCategoryModalRef?.current.open()} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({
-                                title: 'Delete category?',
+                                title: 'Delete size?',
                                 content: (
                                     <p>Are you sure you want to delete this store?<br /> This action cannot be undone. </p>
                                 ),
@@ -114,7 +112,7 @@ export const CategoryTable = ({
     }, [data])
 
     const onSearch = (value: string) => {
-        setDataSource(data.filter((Category: Category) => Category.name.includes(value)));
+        setDataSource(data.filter((Size: Size) => Size.name.includes(value)));
     };
 
     const formatTotal = dataSource.length > 0 ? dataSource.length : 1;
@@ -122,7 +120,7 @@ export const CategoryTable = ({
     return (
         <Spin spinning={loading}>
             <div className='custom-table-wrapper'>
-                <TableHeader onSearch={(txt) => onSearch(txt)} title='Category' />
+                <TableHeader onSearch={(txt) => onSearch(txt)} title='Size' />
                 <Table onRow={(record, rowIndex) => {
                     return {
                         onClick: (e) => {
@@ -130,7 +128,7 @@ export const CategoryTable = ({
                         }
                     }
                 }} pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
-                <EditCategoryModal ref={editCategoryModalRef} billboardList={billboardList} initialData={selectValue as any} />
+                <EditSizeModal ref={editCategoryModalRef} initialData={selectValue as any} />
             </div>
         </Spin>
     )

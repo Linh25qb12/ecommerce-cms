@@ -16,8 +16,6 @@ export const CategoryClient = ({
     categoryList: Category[],
     billboardList: Billboard[]
 }) => {
-    const router = useRouter();
-    const params = useParams();
     const addCategoryModalRef = useRef<any>(null);
 
     return (

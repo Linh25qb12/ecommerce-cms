@@ -5,15 +5,13 @@ import { useStoreModal } from "@/hook/useStoreModal";
 import { Button, Form, Input, Modal, notification, Select, Spin } from "antd";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import axios from "axios";
-import { Billboard, Category } from "@prisma/client";
+import { Size } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
-export const EditCategoryModal = React.forwardRef(({
+export const EditSizeModal = React.forwardRef(({
     initialData,
-    billboardList
 }: {
-    initialData: Category,
-    billboardList: Billboard[]
+    initialData: Size,
 }, ref) => {
     const [visible, setVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -95,23 +93,6 @@ export const EditCategoryModal = React.forwardRef(({
                             tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                         >
                             <Input placeholder="Category name" size="large" />
-                        </Form.Item>
-                        <Form.Item
-                            label={<b>Billboard</b>}
-                            name="billboardId"
-                            rules={[{ required: true, message: 'Please select category billboard!' }]}
-                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
-                        >
-                            <Select
-                                placeholder="Billboard name"
-                                size="large"
-                                options={billboardList.map((billboard: Billboard) => {
-                                    return {
-                                        label: billboard.label,
-                                        value: billboard.id,
-                                    }
-                                })}
-                            />
                         </Form.Item>
                     </Form>
                 </Spin>

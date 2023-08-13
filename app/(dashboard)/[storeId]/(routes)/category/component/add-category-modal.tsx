@@ -17,6 +17,7 @@ export const AddCategoryModal = React.forwardRef(({
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams()
+    const [refesh, setRefresh] = useState(0);
 
     useImperativeHandle(ref, () => {
         return {
@@ -46,7 +47,8 @@ export const AddCategoryModal = React.forwardRef(({
             })
         } finally {
             setLoading(false);
-
+            setRefresh(prev => prev + 1);
+            onCancle();
         }
     };
 
@@ -58,7 +60,7 @@ export const AddCategoryModal = React.forwardRef(({
     return (
         <>
             <Modal
-                title='Create Category'
+                title='Edit Category'
                 className="footless-modal"
                 centered
                 open={visible}
@@ -73,7 +75,8 @@ export const AddCategoryModal = React.forwardRef(({
                 ]}
             >
                 <Spin spinning={loading}>
-                    <Form
+                    <Form 
+                        key={refesh}
                         requiredMark='optional'
                         layout="vertical"
                         name="basic"
