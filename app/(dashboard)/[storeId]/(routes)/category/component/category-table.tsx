@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Input, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Billboard, Category } from '@prisma/client';
 import { format } from 'date-fns';
 import { EditOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
+import { EditCategoryModal } from './edit-category-modal';
 import './component.scss';
 
 const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: string) => void }) => {
@@ -32,6 +33,8 @@ export const CategoryTable = ({
 }) => {
     const [dataSource, setDataSource] = useState<Category[]>(data);
     const [refesh, setRefesh] = useState(0);
+    const [defaultValue, setDefaultValue] = useState<Category>();
+    const editCategoryModalRef = useRef<any>(null);
 
     const columns: ColumnsType<Category> = [
         {
@@ -61,11 +64,11 @@ export const CategoryTable = ({
             title: 'Action',
             key: 'action',
             width: '10%',
-            render: (_, record) => {
+            render: (_, record, index) => {
                 return (
                     <div className='action-button'>
-                        <CopyOutlined style={{color: 'blue'}} />
-                        <EditOutlined style={{color: 'green'}} />
+                        <CopyOutlined style={{color: '#4f91ff'}} />
+                        <EditOutlined onClick={() => editCategoryModalRef?.current.open()} style={{color: 'green'}} />
                         <DeleteOutlined style={{color: 'red'}} />
                     </div>
                 );
@@ -76,7 +79,7 @@ export const CategoryTable = ({
 
 
     useEffect(() => {
-        setRefesh(prev => prev + 1);
+        setDataSource(data);
     }, [data])
 
     const onSearch = (value: string) => {
@@ -88,7 +91,14 @@ export const CategoryTable = ({
     return (
         <div className='custom-table-wrapper'>
             <TableHeader onSearch={(txt) => onSearch(txt)} title='Category' />
-            <Table key={refesh} pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
+            <Table onRow={(record, rowIndex) => {
+                return {
+                    onClick: (e) => {
+                        setDefaultValue(record);
+                    }
+                }
+            }} key={refesh} pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
+            <EditCategoryModal ref={editCategoryModalRef} billboardList={billboardList} initialData={defaultValue} />
         </div>
     )
 };

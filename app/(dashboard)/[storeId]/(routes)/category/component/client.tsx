@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useParams, useRouter } from "next/navigation";
 import { Billboard, Category } from "@prisma/client";
 import { CategoryTable } from "./category-table";
-import { AddCategoryModal } from "./add-category-moda";
+import { AddCategoryModal } from "./add-category-modal";
 import { useRef } from "react";
 
 export const CategoryClient = ({
