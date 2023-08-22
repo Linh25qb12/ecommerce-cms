@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Modal, Spin, Table, notification } from 'antd';
+import { ColorPicker, Input, Modal, Spin, Table, notification } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Billboard, Category, Size } from '@prisma/client';
+import { Color, Size } from '@prisma/client';
 import { format } from 'date-fns';
 import { EditOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
-import { EditSizeModal } from './edit-size-modal';
+import { EditColorModal } from './edit-color-modal';
 import './component.scss';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
@@ -26,19 +26,19 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
     );
 };
 
-export const SizeTable = ({
+export const ColorTable = ({
     data,
 }: {
-    data: Size[],
+    data: Color[],
 }) => {
-    const [dataSource, setDataSource] = useState<Size[]>(data);
-    const [selectValue, setSelectValue] = useState<Size>();
-    const editSizeModalRef = useRef<any>(null);
+    const [dataSource, setDataSource] = useState<Color[]>(data);
+    const [selectValue, setSelectValue] = useState<Color>();
+    const editColorModalRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
 
-    const columns: ColumnsType<Size> = [
+    const columns: ColumnsType<Color> = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -50,6 +50,9 @@ export const SizeTable = ({
             dataIndex: 'value',
             key: 'value',
             width: '30%',
+            render: (text) => {
+                return <ColorPicker value={text} open={false} showText />
+            }
         },
         {
             title: 'Create Date',
@@ -70,17 +73,17 @@ export const SizeTable = ({
                 return (
                     <div className='action-button'>
                         <CopyOutlined style={{ color: '#4f91ff' }} />
-                        <EditOutlined onClick={() => editSizeModalRef?.current.open()} style={{ color: 'green' }} />
+                        <EditOutlined onClick={() => editColorModalRef?.current.open()} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({
-                                title: 'Delete size?',
+                                title: 'Delete color?',
                                 content: (
-                                    <p>Are you sure you want to delete this store?<br /> This action cannot be undone. </p>
+                                    <p>Are you sure you want to delete this color?<br /> This action cannot be undone. </p>
                                 ),
                                 onOk: async () => {
                                     try {
                                         setLoading(true)
-                                        await axios.delete(`/api/${params.storeId}/size/${record.id}`);
+                                        await axios.delete(`/api/${params.storeId}/color/${record.id}`);
                                         notification.success({
                                             message: 'Delete category success!',
                                             placement: "bottomRight",
@@ -109,10 +112,10 @@ export const SizeTable = ({
 
     useEffect(() => {
         setDataSource(data);
-    }, [data])
+    }, [data]);
 
     const onSearch = (value: string) => {
-        setDataSource(data.filter((Size: Size) => Size.name.includes(value)));
+        setDataSource(data.filter((Color: Color) => Color.name.includes(value)));
     };
 
     const formatTotal = dataSource.length > 0 ? dataSource.length : 1;
@@ -128,7 +131,7 @@ export const SizeTable = ({
                         }
                     }
                 }} pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
-                <EditSizeModal ref={editSizeModalRef} initialData={selectValue as any} />
+                <EditColorModal ref={editColorModalRef} initialData={selectValue as any} />
             </div>
         </Spin>
     )

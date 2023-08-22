@@ -2,16 +2,16 @@
 
 import React, { useImperativeHandle, useState } from "react";
 import { useStoreModal } from "@/hook/useStoreModal";
-import { Button, Form, Input, Modal, notification, Select, Spin } from "antd";
+import { Button, ColorPicker, Form, Input, Modal, notification, Select, Spin } from "antd";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import axios from "axios";
-import { Size } from "@prisma/client";
+import { Color, Size } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 
-export const EditSizeModal = React.forwardRef(({
+export const EditColorModal = React.forwardRef(({
     initialData,
 }: {
-    initialData: Size,
+    initialData: Color,
 }, ref) => {
     const [visible, setVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -29,12 +29,16 @@ export const EditSizeModal = React.forwardRef(({
     }, []);
 
     const onFinish = async (values: any) => {
+        const formatObject = {
+            ...values,
+            value: `#${values.value.toHex()}`,
+        }
         try {
             setLoading(true);
-            await axios.patch(`/api/${params.storeId}/size/${initialData.id}`, values);
+            await axios.patch(`/api/${params.storeId}/color/${initialData.id}`, formatObject);
 
             notification.success({
-                message: 'Category updated success',
+                message: 'Color updated success',
                 placement: "bottomRight",
                 duration: 2
             })
@@ -61,7 +65,7 @@ export const EditSizeModal = React.forwardRef(({
     return (
         <>
             <Modal
-                title='Create Category'
+                title='Create Color'
                 className="footless-modal"
                 centered
                 open={visible}
@@ -70,7 +74,7 @@ export const EditSizeModal = React.forwardRef(({
                     <Button key="back" disabled={loading} onClick={onCancle}>
                         Return
                     </Button>,
-                    <Button form="edit-category-form" loading={loading} key="submit" type="primary" htmlType="submit">
+                    <Button form="edit-color-form" loading={loading} key="submit" type="primary" htmlType="submit">
                         Submit
                     </Button>,
                 ]}
@@ -81,26 +85,26 @@ export const EditSizeModal = React.forwardRef(({
                         requiredMark='optional'
                         layout="vertical"
                         name="basic"
-                        id="edit-category-form"
+                        id="edit-color-form"
                         onFinish={onFinish}
                         autoComplete="off"
                         initialValues={initialData}
                     >
                         <Form.Item
-                            label={<b>Category name</b>}
+                            label={<b>Color name</b>}
                             name="name"
-                            rules={[{ required: true, message: 'Please input your category name!' }]}
+                            rules={[{ required: true, message: 'Please input your color name!' }]}
                             tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                         >
-                            <Input placeholder="Category name" size="large" />
+                            <Input placeholder="Color name" size="large" />
                         </Form.Item>
                         <Form.Item
-                            label={<b>Size value</b>}
+                            label={<b>Color value</b>}
                             name="value"
-                            rules={[{ required: true, message: 'Please input your size value!' }]}
+                            rules={[{ required: true, message: 'Please input your color value!' }]}
                             tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                         >
-                            <Input placeholder="Size value" size="large" />
+                            <ColorPicker showText />
                         </Form.Item>
                     </Form>
                 </Spin>

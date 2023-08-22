@@ -86,6 +86,14 @@ export const AddSizeModal = React.forwardRef((props, ref) => {
                         >
                             <Input placeholder="Size name" size="large" />
                         </Form.Item>
+                        <Form.Item
+                            label={<b>Size value</b>}
+                            name="value"
+                            rules={[{ required: true, message: 'Please input your size value!' }]}
+                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
+                        >
+                            <Input placeholder="Size value" size="large" />
+                        </Form.Item>
                     </Form>
                 </Spin>
             </Modal>

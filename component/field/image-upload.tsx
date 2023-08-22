@@ -7,7 +7,7 @@ import { EditOutlined, DeleteOutlined, FileImageOutlined } from '@ant-design/ico
 
 export const ImageUploader = ({
     onChange,
-    value,
+    value='',
 }: {
     onChange: (value: string) => void,
     value: string,
@@ -28,6 +28,7 @@ export const ImageUploader = ({
     if (!isMounted) {
         return null;
     }
+    console.log(value);
 
     return (
         <div>

@@ -19,8 +19,8 @@ export const SizeClient = ({
     return (
         <>
             <div className="page-header-wrapper">
-                <Heading title={`Category (${sizeList.length})`} description="Manage category for your store" />
-                <Button onClick={() => addSizeModalRef.current?.open()} size="large" type="primary"><PlusOutlined /> Add category</Button>
+                <Heading title={`Size (${sizeList.length})`} description="Manage size for your store" />
+                <Button onClick={() => addSizeModalRef.current?.open()} size="large" type="primary"><PlusOutlined /> Add size</Button>
                 <AddSizeModal ref={addSizeModalRef} />
             </div>
             <Divider />

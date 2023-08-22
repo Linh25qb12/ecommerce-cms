@@ -1,23 +1,24 @@
 'use client';
 
 import React, { useImperativeHandle, useState } from "react";
-import { useStoreModal } from "@/hook/useStoreModal";
-import { Button, Form, Input, Modal, notification, Select, Spin } from "antd";
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { Billboard } from "@prisma/client";
+import { Button, Col, Divider, Form, Input, Modal, Spin, notification, Alert, Tag } from "antd";
+import { InfoCircleOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import axios from "axios";
-import { Size } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
+import { ImageUploader } from "@/component/field/image-upload";
 
-export const EditSizeModal = React.forwardRef(({
+export const EditBillboardModal = React.forwardRef(({
     initialData,
 }: {
-    initialData: Size,
+    initialData: Billboard,
 }, ref) => {
-    const [visible, setVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
-
+    const [createBillboardForm] = Form.useForm();
+    const imageUrl = Form.useWatch('imageUrl', createBillboardForm);
+    const [visible, setVisible] = useState<boolean>(false);
     const [refresh, setRefresh] = useState(0);
 
     useImperativeHandle(ref, () => {
@@ -31,10 +32,9 @@ export const EditSizeModal = React.forwardRef(({
     const onFinish = async (values: any) => {
         try {
             setLoading(true);
-            await axios.patch(`/api/${params.storeId}/size/${initialData.id}`, values);
-
+            await axios.patch(`/api/${params.storeId}/billboard/${initialData?.id}`, values);
             notification.success({
-                message: 'Category updated success',
+                message: 'Billboard update successful',
                 placement: "bottomRight",
                 duration: 2
             })
@@ -52,6 +52,9 @@ export const EditSizeModal = React.forwardRef(({
         }
     };
 
+    const onImageChange = (url: string) => {
+        createBillboardForm.setFieldValue('imageURL', url);
+    }
 
     const onCancle = () => {
         setVisible(false);
@@ -61,7 +64,7 @@ export const EditSizeModal = React.forwardRef(({
     return (
         <>
             <Modal
-                title='Create Category'
+                title='Edit billboard'
                 className="footless-modal"
                 centered
                 open={visible}
@@ -70,37 +73,43 @@ export const EditSizeModal = React.forwardRef(({
                     <Button key="back" disabled={loading} onClick={onCancle}>
                         Return
                     </Button>,
-                    <Button form="edit-category-form" loading={loading} key="submit" type="primary" htmlType="submit">
+                    <Button form="edit-billboard-form" loading={loading} key="submit" type="primary" htmlType="submit">
                         Submit
                     </Button>,
                 ]}
-            >
+                >
                 <Spin spinning={loading}>
                     <Form
                         key={refresh}
+                        form={createBillboardForm}
                         requiredMark='optional'
                         layout="vertical"
                         name="basic"
-                        id="edit-category-form"
+                        id="edit-billboard-form"
                         onFinish={onFinish}
+                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
                         initialValues={initialData}
                     >
                         <Form.Item
-                            label={<b>Category name</b>}
-                            name="name"
-                            rules={[{ required: true, message: 'Please input your category name!' }]}
+                            label={<b>Billboard label</b>}
+                            name="label"
+                            rules={[{ required: true, message: 'Please input your billboard label!' }]}
                             tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                         >
-                            <Input placeholder="Category name" size="large" />
+                            <Input placeholder="Billboard label" size="large" />
                         </Form.Item>
                         <Form.Item
-                            label={<b>Size value</b>}
-                            name="value"
-                            rules={[{ required: true, message: 'Please input your size value!' }]}
+                            label={<b>Billboard background</b>}
+                            name='imageUrl'
+                            rules={[{ required: true, message: 'Please select your billboard background!' }]}
                             tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                         >
-                            <Input placeholder="Size value" size="large" />
+                            <ImageUploader
+                                value={imageUrl}
+                                disabled={loading}
+                                onChange={(url) => onImageChange(url)}
+                            />
                         </Form.Item>
                     </Form>
                 </Spin>
