@@ -55,7 +55,7 @@ export async function GET(
             return new NextResponse('Required field is missing!', { status: 400 });
         }
 
-        const colorList = prismadb.color.findMany({
+        const colorList = await prismadb.color.findMany({
             where: {
                 storeId: params.storeId
             }

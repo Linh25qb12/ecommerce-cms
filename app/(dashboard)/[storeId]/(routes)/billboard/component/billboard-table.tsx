@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Input, Modal, Table, notification, Spin} from 'antd';
+import { Input, Modal, Table, notification, Spin } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Billboard } from '@prisma/client';
 import { format } from 'date-fns';
@@ -20,7 +20,7 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
 
     return (
         <div className='table-header'>
-            <h2>{title}</h2>
+            <h2 style={{ lineHeight: '32px' }}>{title}</h2>
             <Search allowClear placeholder="input search text" onSearch={handleSearch} style={{ width: 200, height: 32 }} />
         </div>
     );
@@ -28,7 +28,6 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
 
 export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     const [dataSource, setDataSource] = useState<Billboard[]>(data);
-    const [selectValue, setSelectValue] = useState<Billboard>();
     const editBillboardModalRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -61,7 +60,10 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
                 return (
                     <div className='action-button'>
                         <CopyOutlined style={{ color: '#4f91ff' }} />
-                        <EditOutlined onClick={() => editBillboardModalRef?.current.open()} style={{ color: 'green' }} />
+                        <EditOutlined onClick={() => {
+                            console.log('click icon here')
+                            editBillboardModalRef?.current.open(record)
+                        }} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({
                                 title: 'Delete size?',
@@ -111,15 +113,9 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     return (
         <Spin spinning={loading}>
             <div className='custom-table-wrapper'>
-                <TableHeader onSearch={(txt) => onSearch(txt)} title='Billboard' />
-                <Table onRow={(record, rowIndex) => {
-                    return {
-                        onClick: (e) => {
-                            setSelectValue(record);
-                        }
-                    }
-                }} pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
-                <EditBillboardModal initialData={selectValue as any} ref={editBillboardModalRef} />
+                <TableHeader onSearch={(txt) => onSearch(txt)} title={`${data.length} Billboard`} />
+                <Table pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
+                <EditBillboardModal ref={editBillboardModalRef} />
             </div>
         </Spin>
     )

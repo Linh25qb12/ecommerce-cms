@@ -55,12 +55,12 @@ export async function GET(
             return new NextResponse('Required field is missing!', { status: 400 });
         }
 
-        const billboardList = prismadb.billboard.findMany({
+        const billboardList = await prismadb.billboard.findMany({
             where: {
                 storeId: params.storeId
             }
         });
-        
+
         return NextResponse.json(billboardList);
     } catch (error) {
         console.log('[BILLBOARD_GET]', error);

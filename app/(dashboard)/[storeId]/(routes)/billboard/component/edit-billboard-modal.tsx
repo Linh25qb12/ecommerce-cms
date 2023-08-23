@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useImperativeHandle, useState } from "react";
+import React, { useImperativeHandle, useState, useEffect } from "react";
 import { Billboard } from "@prisma/client";
 import { Button, Col, Divider, Form, Input, Modal, Spin, notification, Alert, Tag } from "antd";
 import { InfoCircleOutlined, ExclamationCircleFilled } from '@ant-design/icons';
@@ -8,22 +8,20 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { ImageUploader } from "@/component/field/image-upload";
 
-export const EditBillboardModal = React.forwardRef(({
-    initialData,
-}: {
-    initialData: Billboard,
-}, ref) => {
+export const EditBillboardModal = React.forwardRef((props, ref) => {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
+    const [initialData, setInitialData] = useState<Billboard>();
     const [createBillboardForm] = Form.useForm();
     const imageUrl = Form.useWatch('imageUrl', createBillboardForm);
     const [visible, setVisible] = useState<boolean>(false);
-    const [refresh, setRefresh] = useState(0);
 
     useImperativeHandle(ref, () => {
         return {
-            open: () => {
+            open: (recordData: any) => {
+                setInitialData(recordData);
+                createBillboardForm.setFieldsValue(recordData)
                 setVisible(true);
             }
         };
@@ -58,7 +56,6 @@ export const EditBillboardModal = React.forwardRef(({
 
     const onCancle = () => {
         setVisible(false);
-        setRefresh(prev => prev + 1);
     };
 
     return (
@@ -80,16 +77,13 @@ export const EditBillboardModal = React.forwardRef(({
                 >
                 <Spin spinning={loading}>
                     <Form
-                        key={refresh}
                         form={createBillboardForm}
                         requiredMark='optional'
                         layout="vertical"
                         name="basic"
                         id="edit-billboard-form"
                         onFinish={onFinish}
-                        // onFinishFailed={onFinishFailed}
                         autoComplete="off"
-                        initialValues={initialData}
                     >
                         <Form.Item
                             label={<b>Billboard label</b>}

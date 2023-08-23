@@ -16,7 +16,6 @@ export const AddBillboardModal = React.forwardRef((props, ref) => {
     const [createBillboardForm] = Form.useForm();
     const imageUrl = Form.useWatch('imageUrl', createBillboardForm);
     const [visible, setVisible] = useState<boolean>(false);
-    const [refresh, setRefresh] = useState(0);
 
     useImperativeHandle(ref, () => {
         return {
@@ -28,7 +27,6 @@ export const AddBillboardModal = React.forwardRef((props, ref) => {
 
     const onCancle = () => {
         setVisible(false);
-        setRefresh(prev => prev + 1);
     };
 
     const onFinish = async (values: any) => {
@@ -51,6 +49,7 @@ export const AddBillboardModal = React.forwardRef((props, ref) => {
         } finally {
             setLoading(false);
             onCancle();
+            createBillboardForm.resetFields();
         }
     };
 
@@ -77,7 +76,6 @@ export const AddBillboardModal = React.forwardRef((props, ref) => {
             >
                 <Spin spinning={loading}>
                     <Form
-                        key={refresh}
                         form={createBillboardForm}
                         requiredMark='optional'
                         layout="vertical"

@@ -54,7 +54,17 @@ export const Navbar = ({
     ]
 
     return (
-        <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20}}>
+        <Header 
+        style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between', 
+                gap: 20,
+                zIndex: 9999,
+                position: 'sticky',
+                top: 0,
+                boxShadow: '0 2px 4px -1px rgba(0,0,0,0.25)',
+            }}>
             <Select
                 showSearch
                 style={{ width: 170 }}

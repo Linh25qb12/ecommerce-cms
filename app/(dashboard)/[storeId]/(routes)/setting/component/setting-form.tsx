@@ -10,6 +10,7 @@ import './setting-form.scss';
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useOrigin } from "@/hook/useOrigin";
+import { APIAlert } from "@/component/api-alert/api-alert";
 
 export const SettingForm = ({
     initialData,
@@ -20,16 +21,6 @@ export const SettingForm = ({
     const origin = useOrigin();
     const router = useRouter();
     const params = useParams();
-
-    const apiStatusMap = {
-        public: 'Public',
-        admin: 'Admin'
-    }
-
-    const apiColorMap = {
-        admin: '#000000',
-        public: '#bebebe'
-    }
 
     const handleDeleteStore = async () => {
         Modal.confirm({
@@ -87,15 +78,6 @@ export const SettingForm = ({
 
     const description = `${origin}/api/${params.storeId}`;
 
-    const onCopy = () => {
-        navigator.clipboard.writeText(description);
-        notification.success({
-            message: 'API Route copied to the clipboard',
-            placement: "bottomRight",
-            duration: 2
-        })
-    }
-
 
     return (
         <Spin spinning={loading}>
@@ -133,19 +115,7 @@ export const SettingForm = ({
                     </Form>
                 </Col>
                 <Divider />
-                <Alert
-                    style={{ background: 'white', border: '1px solid #d3d3d3' }}
-                    message={<><b>Test&nbsp;&nbsp;<Tag color='#bebebe' style={{ borderRadius: 999999, padding: '1px 10px'}}>{apiStatusMap.public}</Tag></b></>}
-                    description={<b><Tag style={{color: 'black', fontSize: 14}} color='#d3d3d3'>{description}</Tag></b>}
-                    type="info"
-                    action={
-                        <Button onClick={onCopy} size='large' type="text">
-                            <CopyOutlined />
-                        </Button>
-                    }
-                    showIcon
-                    icon={<CloudDownloadOutlined />}
-                />
+                <APIAlert title="Get" apiStatus="admin" description={description} />
             </div>
         </Spin>
     );

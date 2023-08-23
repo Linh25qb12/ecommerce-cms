@@ -55,7 +55,7 @@ export async function GET(
             return new NextResponse('Required field is missing!', { status: 400 });
         }
 
-        const sizeList = prismadb.size.findMany({
+        const sizeList = await prismadb.size.findMany({
             where: {
                 storeId: params.storeId
             }
