@@ -60,7 +60,7 @@ export const Navbar = ({
                 alignItems: 'center', 
                 justifyContent: 'space-between', 
                 gap: 20,
-                zIndex: 9999,
+                zIndex: 99,
                 position: 'sticky',
                 top: 0,
                 boxShadow: '0 2px 4px -1px rgba(0,0,0,0.25)',

@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Input, Modal, Table, notification, Spin } from 'antd';
+import { Input, Modal, Table, notification, Spin, ColorPicker } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Billboard } from '@prisma/client';
+import { Product } from '@prisma/client';
 import { format } from 'date-fns';
 import { EditOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
-import { EditBillboardModal } from './edit-billboard-modal';
+import { EditProductModal } from './edit-product-modal';
 import './component.scss';
 
 const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: string) => void }) => {
@@ -26,31 +26,74 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
     );
 };
 
-export const BillboardTable = ({ data }: { data: Billboard[] }) => {
-    const [dataSource, setDataSource] = useState<Billboard[]>(data);
-    const editBillboardModalRef = useRef<any>(null);
+export const ProductTable = ({ 
+    data 
+}: { 
+    data: Product[] 
+}) => {
+    const [dataSource, setDataSource] = useState<Product[]>(data);
+    const editProductModalRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
 
 
-    const columns: ColumnsType<Billboard> = [
+    const columns: ColumnsType<Product> = [
         {
-            title: 'Label',
-            dataIndex: 'label',
-            key: 'label',
-            width: '30%',
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            width: '14%',
+        },
+        {
+            title: 'Category',
+            dataIndex: ['category', 'name'],
+            key: 'category',   
+            width: '14%',
         },
         {
             title: 'Create Date',
             dataIndex: 'createAt',
             key: 'createAt',
-            width: '30%',
+            width: '12%',
             render: (text) => {
                 return (
                     <>{format(text, 'PPP')}</>
                 );
             }
+        },
+        {
+            title: 'Archived',
+            dataIndex: 'isArchived',
+            key: 'isArchived',
+            width: '10%',
+        },
+        {
+            title: 'Featured',
+            dataIndex: 'isFeatured',
+            key: 'isFeatured',
+            width: '10%',
+        },
+        {
+            title: 'Size',
+            dataIndex: ['size', 'name'],
+            key: 'size',
+            width: '10%',
+        },
+        {
+            title: 'Color',
+            dataIndex: ['color', 'value'],
+            key: 'color',
+            render: (text) => {
+                return <ColorPicker value={text} open={false} showText />
+            },
+            width: '10%',        
+        },
+        {
+            title: 'Price',
+            dataIndex: 'price',
+            key: 'price',
+            width: '10%',
         },
         {
             title: 'Action',
@@ -62,20 +105,20 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
                         <CopyOutlined style={{ color: '#4f91ff' }} />
                         <EditOutlined onClick={() => {
                             console.log('click icon here')
-                            editBillboardModalRef?.current.open(record)
+                            editProductModalRef?.current.open(record)
                         }} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({
                                 title: 'Delete size?',
                                 content: (
-                                    <p>Are you sure you want to delete this billboard?<br /> This action cannot be undone. </p>
+                                    <p>Are you sure you want to delete this product?<br /> This action cannot be undone. </p>
                                 ),
                                 onOk: async () => {
                                     try {
                                         setLoading(true)
-                                        await axios.delete(`/api/${params.storeId}/billboard/${record.id}`);
+                                        await axios.delete(`/api/${params.storeId}/product/${record.id}`);
                                         notification.success({
-                                            message: 'Delete category success!',
+                                            message: 'Delete product success!',
                                             placement: "bottomRight",
                                             duration: 2
                                         })
@@ -83,7 +126,7 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
                                     } catch (error) {
                                         notification.error({
                                             message: 'Somthing went wrong!',
-                                            description: 'Make sure you removed all categories using this billboard first.',
+                                            description: 'Make sure you removed all categories using this product first.',
                                             placement: "bottomRight",
                                             duration: 2
                                         })
@@ -103,7 +146,7 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     const formatTotal = dataSource.length > 0 ? dataSource.length : 1;
 
     const onSearch = (value: string) => {
-        setDataSource(data.filter((billboard: Billboard) => billboard.label.includes(value)));
+        setDataSource(data.filter((product: Product) => product.name.includes(value)));
     };
 
     useEffect(() => {
@@ -113,9 +156,9 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     return (
         <Spin spinning={loading}>
             <div className='custom-table-wrapper'>
-                <TableHeader onSearch={(txt) => onSearch(txt)} title={`${data.length} Billboard`} />
+                <TableHeader onSearch={(txt) => onSearch(txt)} title={`${data.length} Product`} />
                 <Table pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
-                <EditBillboardModal ref={editBillboardModalRef} />
+                <EditProductModal ref={editProductModalRef} />
             </div>
         </Spin>
     )
