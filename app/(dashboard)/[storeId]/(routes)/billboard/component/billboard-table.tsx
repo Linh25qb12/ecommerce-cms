@@ -32,8 +32,8 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
-
-
+    console.log(data);
+    
     const columns: ColumnsType<Billboard> = [
         {
             title: 'Label',
@@ -61,7 +61,6 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
                     <div className='action-button'>
                         <CopyOutlined style={{ color: '#4f91ff' }} />
                         <EditOutlined onClick={() => {
-                            console.log('click icon here')
                             editBillboardModalRef?.current.open(record)
                         }} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {

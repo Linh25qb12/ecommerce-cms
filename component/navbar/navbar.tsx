@@ -14,7 +14,7 @@ export const Navbar = ({
     storeList,
     className,
     ...props
-}: React.HTMLAttributes<HTMLElement> & {storeList: Store[]}) => {
+}: React.HTMLAttributes<HTMLElement> & { storeList: Store[] }) => {
     const { Header } = Layout;
     const params = useParams();
     const router = useRouter();
@@ -22,11 +22,11 @@ export const Navbar = ({
     const storeModal = useStoreModal();
 
     const itemList = [
-        
+
         {
             label: <Link href={`/${params.storeId}`}><b>Overview</b></Link>,
             key: 'dashboard',
-        },  
+        },
         {
             label: <Link href={`/${params.storeId}/billboard`}><b>Billboard</b></Link>,
             key: 'billboard',
@@ -34,7 +34,7 @@ export const Navbar = ({
         {
             label: <Link href={`/${params.storeId}/category`}><b>Category</b></Link>,
             key: 'category',
-        },    
+        },
         {
             label: <Link href={`/${params.storeId}/size`}><b>Size</b></Link>,
             key: 'size',
@@ -42,11 +42,15 @@ export const Navbar = ({
         {
             label: <Link href={`/${params.storeId}/color`}><b>Color</b></Link>,
             key: 'color',
-        },    
+        },
         {
             label: <Link href={`/${params.storeId}/product`}><b>Product</b></Link>,
             key: 'product',
-        },    
+        },
+        {
+            label: <Link href={`/${params.storeId}/order`}><b>Order</b></Link>,
+            key: 'order',
+        },
         {
             label: <Link href={`/${params.storeId}/setting`}><b>Setting</b></Link>,
             key: 'setting',
@@ -54,11 +58,11 @@ export const Navbar = ({
     ]
 
     return (
-        <Header 
-        style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'space-between', 
+        <Header
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 gap: 20,
                 zIndex: 99,
                 position: 'sticky',
@@ -68,28 +72,28 @@ export const Navbar = ({
             <Select
                 showSearch
                 style={{ width: 170 }}
-                suffixIcon={<ShoppingOutlined style={{fontSize: 20, fontWeight: 'bold', color: 'black'}} />}
+                suffixIcon={<ShoppingOutlined style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }} />}
                 placeholder="Select a store"
                 optionFilterProp="children"
                 defaultValue={params.storeId}
-                onChange={(value) => router.push(`/${value}`)} 
+                onChange={(value) => router.push(`/${value}`)}
                 dropdownRender={(menu) => (
                     <>
-                      {menu}
-                      <Divider style={{ margin: '4px 0' }} />
-                        <Button onClick={() => storeModal.onOpen()} style={{width: '100%'}} type="link" size='small' icon={<PlusOutlined />} >
-                          Create Store
+                        {menu}
+                        <Divider style={{ margin: '4px 0' }} />
+                        <Button onClick={() => storeModal.onOpen()} style={{ width: '100%' }} type="link" size='small' icon={<PlusOutlined />} >
+                            Create Store
                         </Button>
                     </>
-                  )}
+                )}
                 options={storeList.map(((store: Store) => {
                     return {
                         value: store.id,
-                        label:  <b>{store.name}</b>,
+                        label: <b>{store.name}</b>,
                     }
                 }))}
             />
-            <Menu 
+            <Menu
                 theme='dark'
                 selectedKeys={pathname.split('/')[2] ? [pathname.split('/')[2] as string] : ['dashboard']}
                 style={{ flex: 'auto', gap: 5 }}

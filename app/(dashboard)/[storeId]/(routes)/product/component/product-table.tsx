@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Input, Modal, Table, notification, Spin, ColorPicker } from 'antd';
+import { Input, Modal, Table, notification, Spin, ColorPicker, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Product } from '@prisma/client';
+import { Category, Color, Product, Size } from '@prisma/client';
 import { format } from 'date-fns';
 import { EditOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import { useParams, useRouter } from 'next/navigation';
@@ -26,17 +26,23 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
     );
 };
 
-export const ProductTable = ({ 
-    data 
-}: { 
-    data: Product[] 
+export const ProductTable = ({
+    data,
+    categoryList,
+    sizeList,
+    colorList
+
+}: {
+    data: Product[],
+    categoryList: Category[],
+    sizeList: Size[],
+    colorList: Color[],
 }) => {
     const [dataSource, setDataSource] = useState<Product[]>(data);
     const editProductModalRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
-
 
     const columns: ColumnsType<Product> = [
         {
@@ -48,13 +54,13 @@ export const ProductTable = ({
         {
             title: 'Category',
             dataIndex: ['category', 'name'],
-            key: 'category',   
+            key: 'category',
             width: '14%',
         },
         {
             title: 'Create Date',
-            dataIndex: 'createAt',
-            key: 'createAt',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
             width: '12%',
             render: (text) => {
                 return (
@@ -67,12 +73,24 @@ export const ProductTable = ({
             dataIndex: 'isArchived',
             key: 'isArchived',
             width: '10%',
+            render: (text) => {
+                if (text === true) {
+                    return <Tag color="blue">TRUE</Tag>
+                }
+                return <Tag color="red">FALSE</Tag>
+            }
         },
         {
             title: 'Featured',
             dataIndex: 'isFeatured',
             key: 'isFeatured',
             width: '10%',
+            render: (text) => {
+                if (text === true) {
+                    return <Tag color="blue">TRUE</Tag>
+                }
+                return <Tag color="red">FALSE</Tag>
+            }
         },
         {
             title: 'Size',
@@ -87,13 +105,16 @@ export const ProductTable = ({
             render: (text) => {
                 return <ColorPicker value={text} open={false} showText />
             },
-            width: '10%',        
+            width: '10%',
         },
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
             width: '10%',
+            render: (text) => {
+                return <>{text}$</>
+            }
         },
         {
             title: 'Action',
@@ -104,7 +125,6 @@ export const ProductTable = ({
                     <div className='action-button'>
                         <CopyOutlined style={{ color: '#4f91ff' }} />
                         <EditOutlined onClick={() => {
-                            console.log('click icon here')
                             editProductModalRef?.current.open(record)
                         }} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
@@ -158,7 +178,12 @@ export const ProductTable = ({
             <div className='custom-table-wrapper'>
                 <TableHeader onSearch={(txt) => onSearch(txt)} title={`${data.length} Product`} />
                 <Table pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
-                <EditProductModal ref={editProductModalRef} />
+                <EditProductModal
+                    categoryList={categoryList}
+                    sizeList={sizeList}
+                    colorList={colorList}
+                    ref={editProductModalRef}
+                />
             </div>
         </Spin>
     )

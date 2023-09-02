@@ -40,7 +40,12 @@ export const ProductClient = ({
                 />
             </div>
             <Divider />
-            <ProductTable data={productList} />
+            <ProductTable
+                categoryList={categoryList}
+                sizeList={sizeList}
+                colorList={colorList}
+                data={productList}
+            />
             <Divider />
             <Heading title={'Product API'} description="Manage product API for your store" />
             <APIAlert title='GET (Product List)   ' description={baseApi} apiStatus="public" />

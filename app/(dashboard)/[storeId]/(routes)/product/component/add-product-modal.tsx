@@ -6,7 +6,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { useParams, useRouter } from "next/navigation";
 import { MultiImageUploader } from "@/component/field/image-upload";
 import axios from "axios";
-import { Category, Color, Size } from "@prisma/client";
+import { Category, Color, Product, Size } from "@prisma/client";
 
 export const AddProductModal = React.forwardRef(({
     colorList,
@@ -21,7 +21,7 @@ export const AddProductModal = React.forwardRef(({
     const router = useRouter();
     const params = useParams();
     const [createProductForm] = Form.useForm();
-    const imageUrl: string[] = Form.useWatch('imageUrl', createProductForm) ?? [];
+    const images: string[] = Form.useWatch('images', createProductForm) ?? [];
     const [visible, setVisible] = useState<boolean>(false);
 
     useImperativeHandle(ref, () => {
@@ -36,7 +36,7 @@ export const AddProductModal = React.forwardRef(({
         setVisible(false);
     };
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: Product) => {
         try {
             setLoading(true);
             await axios.post(`/api/${params.storeId}/product`, values);
@@ -61,11 +61,11 @@ export const AddProductModal = React.forwardRef(({
     };
 
     const onImageChange = (url: string) => {
-        createProductForm.setFieldValue('imageUrl', [...imageUrl, url]);
+        createProductForm.setFieldValue('images', [...images, url]);
     }
 
     const onRemoveImage = (url: string) => {
-        createProductForm.setFieldValue('imageUrl', imageUrl.filter((image: string) => image !== url));
+        createProductForm.setFieldValue('images', images.filter((image: string) => image !== url));
     }
 
     return (
@@ -97,12 +97,12 @@ export const AddProductModal = React.forwardRef(({
                     >
                         <Form.Item
                             label={<b>Product background</b>}
-                            name='imageUrl'
+                            name='images'
                             rules={[{ required: true, message: 'Please select your product background!' }]}
                             tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                         >
                             <MultiImageUploader
-                                value={imageUrl}
+                                value={images}
                                 disabled={loading}
                                 onChange={(url: string) => onImageChange(url)}
                                 onRemove={(url: string) => onRemoveImage(url)}
@@ -192,9 +192,9 @@ export const AddProductModal = React.forwardRef(({
                                 <Form.Item
                                     label={<b>Featured</b>}
                                     name="isFeatured"
-                                    rules={[{ required: true }]}
-                                    tooltip={{ title: 'Required field. This product will appear on the home page.', icon: <InfoCircleOutlined /> }}
+                                    tooltip={{ title: 'This product will appear on the home page.', icon: <InfoCircleOutlined /> }}
                                     valuePropName="checked"
+                                    initialValue={false}
                                 >
                                     <Checkbox>Featured</Checkbox>
                                 </Form.Item>
@@ -203,9 +203,9 @@ export const AddProductModal = React.forwardRef(({
                                 <Form.Item
                                     label={<b>Archived</b>}
                                     name="isArchived"
-                                    rules={[{ required: true }]}
-                                    tooltip={{ title: 'Required field. This product will not appear anywhere in the store.', icon: <InfoCircleOutlined /> }}
+                                    tooltip={{ title: 'This product will not appear anywhere in the store.', icon: <InfoCircleOutlined /> }}
                                     valuePropName="checked"
+                                    initialValue={false}
                                 >
                                     <Checkbox>Archived</Checkbox>
                                 </Form.Item>
