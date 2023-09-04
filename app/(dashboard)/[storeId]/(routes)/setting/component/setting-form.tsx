@@ -80,43 +80,45 @@ export const SettingForm = ({
 
 
     return (
-        <Spin spinning={loading}>
-            <div className="setting-form-wrapper">
-                <div className="page-header-wrapper">
-                    <Heading title='Setting' description='Manage store preferences' />
-                    <Button onClick={handleDeleteStore} size="large" danger type="primary"><DeleteOutlined /></Button>
-                </div>
-                <Divider />
-                <Col span={4}>
-                    <Form
-                        requiredMark='optional'
-                        layout="vertical"
-                        name="basic"
-                        id="create-store-form"
-                        onFinish={onFinish}
-                        // onFinishFailed={onFinishFailed}
-                        autoComplete="off"
-                    >
-
-                        <Form.Item
-                            label={<b>Store name</b>}
-                            name="name"
-                            initialValue={initialData.name}
-                            rules={[{ required: true, message: 'Please input your store name!' }]}
-                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
+        <div>
+            <Spin spinning={loading}>
+                <div className="setting-form-wrapper">
+                    <div className="page-header-wrapper">
+                        <Heading title='Setting' description='Manage store preferences' />
+                        <Button onClick={handleDeleteStore} size="large" danger type="primary"><DeleteOutlined /></Button>
+                    </div>
+                    <Divider />
+                    <Col span={4}>
+                        <Form
+                            requiredMark='optional'
+                            layout="vertical"
+                            name="basic"
+                            id="create-store-form"
+                            onFinish={onFinish}
+                            // onFinishFailed={onFinishFailed}
+                            autoComplete="off"
                         >
-                            <Input placeholder="Store name" size="large" />
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Save
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Col>
-                <Divider />
-                <APIAlert title="Get" apiStatus="admin" description={description} />
-            </div>
-        </Spin>
+
+                            <Form.Item
+                                label={<b>Store name</b>}
+                                name="name"
+                                initialValue={initialData.name}
+                                rules={[{ required: true, message: 'Please input your store name!' }]}
+                                tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
+                            >
+                                <Input placeholder="Store name" size="large" />
+                            </Form.Item>
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit">
+                                    Save
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                    <Divider />
+                    <APIAlert title="Get" apiStatus="admin" description={description} />
+                </div>
+            </Spin>
+        </div>
     );
 }

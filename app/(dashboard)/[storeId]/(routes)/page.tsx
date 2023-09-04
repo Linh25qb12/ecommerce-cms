@@ -1,3 +1,4 @@
+import { DeployButton } from "@/component/deploy-button/deploy-button";
 import prismadb from "@/lib/prismadb";
 
 
@@ -18,6 +19,7 @@ const DashboardPage = async ({
     return (  
         <div>
             Active store: {store?.name}
+            <DeployButton />
         </div>
     );
 }   

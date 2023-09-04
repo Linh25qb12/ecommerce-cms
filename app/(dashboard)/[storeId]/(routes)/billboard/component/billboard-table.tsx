@@ -110,12 +110,14 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     }, [data]);
 
     return (
-        <Spin spinning={loading}>
-            <div className='custom-table-wrapper'>
-                <TableHeader onSearch={(txt) => onSearch(txt)} title={`${data.length} Billboard`} />
-                <Table pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
-                <EditBillboardModal ref={editBillboardModalRef} />
-            </div>
-        </Spin>
+        <div>
+            <Spin spinning={loading}>
+                <div className='custom-table-wrapper'>
+                    <TableHeader onSearch={(txt) => onSearch(txt)} title={`${data.length} Billboard`} />
+                    <Table pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
+                    <EditBillboardModal ref={editBillboardModalRef} />
+                </div>
+            </Spin>
+        </div>
     )
 };

@@ -15,9 +15,9 @@ const BillboardPage = async ({ params }: {
     })
 
     return (
-        <>
+        <div>
             <BillboardClient billboardList={billboardList}  />
-        </>
+        </div>
     );
 }
 

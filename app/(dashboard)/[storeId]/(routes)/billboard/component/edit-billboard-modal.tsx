@@ -59,7 +59,7 @@ export const EditBillboardModal = React.forwardRef((props, ref) => {
     };
 
     return (
-        <>
+        <div>
             <Modal
                 title='Edit billboard'
                 className="footless-modal"
@@ -108,6 +108,6 @@ export const EditBillboardModal = React.forwardRef((props, ref) => {
                     </Form>
                 </Spin>
             </Modal>
-        </>
+        </div>
     );
 });

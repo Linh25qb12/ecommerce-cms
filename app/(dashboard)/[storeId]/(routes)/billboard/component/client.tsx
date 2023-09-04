@@ -20,7 +20,7 @@ export const BillboardClient = ({ billboardList }: {
     const baseApi = `${origin}/api/${params.storeId}/billboard`;
 
     return (
-        <>
+        <div>
             <div className="page-header-wrapper">
                 <Heading title={'Billboard List'} description="Manage billboard for your store" />
                 <Button onClick={() => addBillboardModalRef.current?.open()} size="large" type="primary"><PlusOutlined /> Add billboard</Button>
@@ -35,6 +35,6 @@ export const BillboardClient = ({ billboardList }: {
             <APIAlert title='GET (Specific billboard)' description={`${baseApi}/{id}`} apiStatus="public"/>
             <APIAlert title='PATCH (Specific billboard)' description={`${baseApi}/{id}`} apiStatus="admin"/>
             <APIAlert title='DELETE (Specific billboard)' description={`${baseApi}/{id}`} apiStatus="admin"/>
-        </>
+        </div>
     );
 }
