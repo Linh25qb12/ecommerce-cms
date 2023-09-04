@@ -86,7 +86,7 @@ export const DeployButton = () => {
                     }
                 }),
                 headers: {
-                    "Authorization": "Bearer B4ykZGPXFG4xbUD2dAkw7L3Y"
+                    Authorization: `Bearer ${process.env.VERCEL_BEARER_KEY}`
                 },
                 method: "post"
             });
