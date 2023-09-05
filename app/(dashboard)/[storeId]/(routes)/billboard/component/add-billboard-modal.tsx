@@ -38,7 +38,7 @@ export const AddBillboardModal = React.forwardRef((props, ref) => {
                 placement: "bottomRight",
                 duration: 2
             })
-            router.refresh();
+            // router.refresh();
         } catch (error) {
             notification.error({
                 message: 'Somthing went wrong!',

@@ -38,7 +38,6 @@ export const SettingForm = ({
                         placement: "bottomRight",
                         duration: 2
                     })
-                    router.refresh();
                     router.push('/');
                 } catch (error) {
                     notification.error({
@@ -48,6 +47,7 @@ export const SettingForm = ({
                         duration: 2
                     })
                 } finally {
+                    router.refresh();
                     setLoading(false);
                 }
             },
@@ -63,7 +63,6 @@ export const SettingForm = ({
                 placement: "bottomRight",
                 duration: 2
             })
-            router.refresh();
         } catch (error) {
             notification.error({
                 message: 'Somthing went wrong!',
@@ -72,6 +71,7 @@ export const SettingForm = ({
                 duration: 2
             })
         } finally {
+            router.refresh();
             setLoading(false);
         }
     };
