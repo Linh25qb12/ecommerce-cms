@@ -32,7 +32,6 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
-    console.log(data);
     
     const columns: ColumnsType<Billboard> = [
         {
