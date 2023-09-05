@@ -2,7 +2,7 @@
 
 import React from "react"
 
-class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
+class ErrorBoundary extends React.Component<any, any> {
     constructor(props: any) {
       super(props)
    
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
    
       // Return children components in case of no error
    
-      return this.props.children
+      return this.props?.children
     }
   }
    
