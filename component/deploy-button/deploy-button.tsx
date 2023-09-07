@@ -109,18 +109,25 @@ export const DeployButton = ({ storeId }: { storeId: string }) => {
             // });
             // const data = await result.json();
             // console.log(data);
-            const res = await axios.post(`/api/${storeId}/deploy`);
-            await axios.post('https://api.vercel.com/v12/now/deployments', {
-                name: 'MyDeployment',
-                projectId: res.data.id,
-                target: 'production',
-            }, 
-            {
-                headers: {
-                    "Authorization": 'Bearer B4ykZGPXFG4xbUD2dAkw7L3Y'
+            // const res = await axios.post(`/api/${storeId}/deploy`);
+            const res = await fetch("https://api.vercel.com/v9/projects/ecommerce-cms/domains", {
+                "headers": {
+                    "Authorization": "Bearer B4ykZGPXFG4xbUD2dAkw7L3Y"
                 },
-            });
+                "method": "get"
+            })
             console.log(res);
+            // await axios.post('https://api.vercel.com/v12/now/deployments', {
+            //     name: 'MyDeployment',
+            //     projectId: res.data.id,
+            //     target: 'production',
+            // },
+            //     {
+            //         headers: {
+            //             "Authorization": 'Bearer B4ykZGPXFG4xbUD2dAkw7L3Y'
+            //         },
+            //     });
+            console.log(res.json);
         } catch (error) {
             console.log(error);
         }
