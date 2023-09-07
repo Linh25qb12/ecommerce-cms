@@ -19,7 +19,7 @@ const DashboardPage = async ({
     return (  
         <div>
             Active store: {store?.name}
-            <DeployButton />
+            <DeployButton storeId={params.storeId} />
         </div>
     );
 }   
