@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from "antd";
+import { Octokit } from "octokit";
 import axios from "axios";
 
 export const DeployButton = ({ storeId }: { storeId: string }) => {
@@ -110,13 +111,47 @@ export const DeployButton = ({ storeId }: { storeId: string }) => {
             // const data = await result.json();
             // console.log(data);
             // const res = await axios.post(`/api/${storeId}/deploy`);
-            const res = await fetch("https://api.vercel.com/v9/projects/ecommerce-cms/domains", {
-                "headers": {
-                    "Authorization": "Bearer B4ykZGPXFG4xbUD2dAkw7L3Y"
-                },
-                "method": "get"
+            // const res = await fetch("https://api.vercel.com/v9/projects/ecommerce-cms/domains", {
+            //     "headers": {
+            //         "Authorization": "Bearer B4ykZGPXFG4xbUD2dAkw7L3Y"
+            //     },
+            //     "method": "get"
+            // })
+            const octokit = new Octokit({
+                auth: 'Bearer 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'
             })
-            console.log(res);
+
+            // const res = await octokit.request('GET /repos/gotecq-linhdoan/ecommerce-store', {
+            //     owner: 'Linh25qb12',
+            //     repo: 'ecommerce-store',
+            //     headers: {   
+            //       'X-GitHub-Api-Version': '2022-11-28'
+            //     }
+            //   })
+
+            // const res = await octokit.request('POST /repos/gotecq-linhdoan/ecommerce-store/forks', {
+            //     name: 'fucntioning',
+            //     // owner: 'Linh25qb12',
+            //     // repo: 'ecommerce-store',
+            //     // organization: 'octocat',
+            //     // default_branch_only: true,
+            //     headers: {
+            //         'X-GitHub-Api-Version': '2022-11-28'
+            //     }
+            // })
+
+            const res = await octokit.request('POST /repos/gotecq-linhdoan/ecommerce-store/generate', {
+                // template_owner: 'gotecq-linhdoan',
+                // template_repo: 'ecommerce-store',
+                // owner: 'gotecq-linhdoan',
+                name: 'Test-clone',
+                description: 'This is your first repository',
+                include_all_branches: false,
+                'private': false,
+                headers: {
+                    'X-GitHub-Api-Version': '2022-11-28'
+                }
+            })
             // await axios.post('https://api.vercel.com/v12/now/deployments', {
             //     name: 'MyDeployment',
             //     projectId: res.data.id,
@@ -127,7 +162,7 @@ export const DeployButton = ({ storeId }: { storeId: string }) => {
             //             "Authorization": 'Bearer B4ykZGPXFG4xbUD2dAkw7L3Y'
             //         },
             //     });
-            console.log(res.json);
+            console.log(res);
         } catch (error) {
             console.log(error);
         }
