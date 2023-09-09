@@ -3,6 +3,7 @@ import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation";
 import './dashboard.scss';
+import { stripe } from "@/lib/stripe";
 
 export default async function DashboardLayout({
     children,
@@ -13,9 +14,9 @@ export default async function DashboardLayout({
         storeId: string,
     }
 }) {
-    const {userId} = auth();
+    const { userId } = auth();
 
-    if(!userId) {
+    if (!userId) {
         redirect('/sign-in');
     }
 
@@ -26,15 +27,30 @@ export default async function DashboardLayout({
         }
     });
 
-    if(!store) {
+    if (!store) {
         redirect('/');
     };
 
+    // const account = await stripe.accounts.create({
+    //     type: 'standard',
+    // });
+
+    // const accountLink = await stripe.accountLinks.create({
+    //     account: 'acct_1NoOhoC44JPpVxTk',
+    //     refresh_url: 'http://localhost:3000/',
+    //     return_url: 'http://localhost:3000/',
+    //     type: 'account_onboarding',
+    // });
+
+
+    
     const storeList = await prismadb.store.findMany({
         where: {
             userId,
         }
     });
+    
+    // redirect(accountLink.url);
 
     return (
         <>
@@ -43,5 +59,5 @@ export default async function DashboardLayout({
                 {children}
             </div>
         </>
-    ); 
+    );
 }
