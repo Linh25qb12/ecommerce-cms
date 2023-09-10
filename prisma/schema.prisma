@@ -22,6 +22,12 @@ model Store {
     updatedAt  DateTime    @updatedAt
 }
 
+model Connect {
+    id String @id @default(uuid())
+    accountId String 
+    connectId String
+}
+
 model Billboard {
     id       String     @id @default(uuid())
     storeId  String
@@ -137,3 +143,5 @@ model Image {
 
     @@index([productId])
 }
+
+

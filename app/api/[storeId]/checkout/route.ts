@@ -24,6 +24,12 @@ export async function POST(
         return new NextResponse('Product ids are required', { status: 400 });
     }
 
+    // const connectAccount = await prismadb.connect.findMany({
+    //     where: {
+    //         accountId: 
+    //     }
+    // });
+
     const products = await prismadb.product.findMany({
         where: {
             id: {
@@ -70,11 +76,13 @@ export async function POST(
         phone_number_collection: {
             enabled: true,
         },
-        success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-        cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
+        success_url: `https://new-repo-api-2.vercel.app/cart?success=1`,
+        cancel_url: `https://new-repo-api-2.vercel.app/cart?canceled=1`,
         metadata: {
             orderId: order.id
         },
+    }, {
+        stripeAccount: 'acct_1NoiMQ4Wa3uhzrRd',
     });
 
     return NextResponse.json({ url: session.url }, {

@@ -1,20 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from "next/server";
 import { Octokit } from 'octokit';
 
 export async function POST(
-    request: NextApiRequest,
-    response: NextApiResponse<{}>,
+    req: Request,
     { params }: { params: { storeId: string } }
 ) {
 
+    const body = await req.json();
+    const { repoName } = body;
     const octokit = new Octokit({
-        auth: 'Bearer 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'
+        auth: process.env.GITHUB_BEARER_KEY
     });
 
     const result = await octokit.request('POST /repos/gotecq-linhdoan/ecommerce-store/generate', {
-        name: 'Test-clone',
-        description: 'This is your first repository',
+        name: repoName,
+        description: `${repoName} Production`,
         include_all_branches: false,
         'private': false,
         headers: {
