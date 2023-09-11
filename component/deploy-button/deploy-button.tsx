@@ -1,117 +1,91 @@
 'use client'
 
-import { Button } from "antd";
+import { useOrigin } from "@/hook/useOrigin";
+import { stripe } from "@/lib/stripe";
+import { Button, Modal, notification } from "antd";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export const DeployButton = () => {
+export const DeployButton = ({ storeId, storeName }: { storeId: string, storeName: string }) => {
 
-    const publicClerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-    const secretClerkKey = process.env.CLERK_SECRET_KEY;
-    const database = process.env.DATABASE_URL;
-    const stripeApiKey = process.env.STRIPE_API_KEY;
-    const stripeWebhookKey = process.env.STRIPE_WEBHOOK_SECRET;
-    const vercelBearerKey = process.env.VERCEL_BEARER_KEY;
+    const origin = useOrigin();
+    const [domain, setDomain] = useState('');
+    const [projectId, setProjectId] = useState<string>('')
+    const [storeUrl, setStoreUrl] = useState<string>('');
+    const router = useRouter();
 
     const deployProduction = async () => {
         try {
-            const result = await fetch("https://api.vercel.com/v9/projects", {
-                body: JSON.stringify({
-                    name: "test-deploy",
-                    framework: "nextjs",
-                    publicSource: true,
-                    environmentVariables: [
-                        {
-                            key: "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
-                            target: "production",
-                            type: "encrypted",
-                            value: publicClerkKey,
-                        },
-                        {
-                            key: "CLERK_SECRET_KEY",
-                            target: "production",
-                            type: "encrypted",
-                            value: secretClerkKey,
-                        },
-                        {
-                            key: "NEXT_PUBLIC_CLERK_SIGN_IN_URL",
-                            target: "production",
-                            type: "encrypted",
-                            value: '/sign-in'
-                        },
-                        {
-                            key: "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
-                            target: "production",
-                            type: "encrypted",
-                            value: '/sign-up'
-                        },
-                        {
-                            key: "NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL",
-                            target: "production",
-                            type: "encrypted",
-                            value: '/'
-                        },
-                        {
-                            key: "NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL",
-                            target: "production",
-                            type: "encrypted",
-                            value: '/'
-                        },
-                        {
-                            key: "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
-                            target: "production",
-                            type: "encrypted",
-                            value: 'greenwich-university'
-                        },
-                        {
-                            key: "DATABASE_URL",
-                            target: "production",
-                            type: "encrypted",
-                            value: database,
-                        },
-                        {
-                            key: "STRIPE_API_KEY",
-                            target: "production",
-                            type: "encrypted",
-                            value: stripeApiKey
-                        },
-                        {
-                            key: "FRONTEND_STORE_URL",
-                            target: "production",
-                            type: "encrypted",
-                            value: 'http://localhost:3001'
-                        },
-                        {
-                            key: "STRIPE_WEBHOOK_SECRET",
-                            target: "production",
-                            type: "encrypted",
-                            value: stripeWebhookKey
-                        },
-                        {
-                            key: "VERCEL_BEARER_KEY",
-                            target: "production",
-                            type: "encrypted",
-                            value: vercelBearerKey
+            const connectList = await axios.get('/api/connect');
+
+            if (connectList.data.length <= 0) {
+                Modal.confirm({
+                    title: 'Stripe account create?',
+                    content: (
+                        <p>You currently have not linked a payment method to your current account.<br />
+                            Please create a stripe account to be able to perform all the functions of the website. </p>
+                    ),
+                    onOk: async () => {
+                        try {
+                            const account = await stripe.accounts.create({
+                                type: 'standard',
+                            });
+                            await axios.post('/api/connect', {
+                                connectId: account.id
+                            });
+
+                            const accountLink = await stripe.accountLinks.create({
+                                account: 'acct_1Np8XE4WFXIHpULF',
+                                refresh_url: origin,
+                                return_url: origin,
+                                type: 'account_onboarding',
+                            });
+                            router.push(accountLink.url);
+                        } catch (error) {
+                            console.log(error);
+                            
+                            notification.error({
+                                message: 'Somthing went wrong!',
+                                placement: "bottomRight",
+                                duration: 2
+                            })
                         }
-                    ],
-                    gitRepository: {
-                        repo: "Linh25qb12/ecommerce-cms",
-                        type: "github"
                     },
-                    skipGitConnectDuringLink: true,
-                }),
-                headers: {
-                    "Authorization": `Bearer ${vercelBearerKey}`
-                },
-                method: "post"
-            });
-            const data = await result.json();
-            console.log(data);
+                })
+            } else {
+                const githubRepo = await axios.post(`/api/${storeId}/github/repo`, { repoName: storeName });
+                const project = await axios.post(`/api/${storeId}/project`, { projectName: githubRepo.data.data.name.toLowerCase() });
+                setProjectId(project.data.id);
+                await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name });
+                const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
+                await axios.patch(`/api/store/${storeId}`, {
+                    connectId: connectList.data[0].connectId,
+                    name: storeName,
+                    websiteUrl: domain.data.domains[0].name
+                });
+                
+                setDomain(domain.data.domains[0].name)
+            }
+
         } catch (error) {
             console.log(error);
         }
     };
 
+     useEffect(() => {
+        const fetchStore = async () => {
+            const store = await axios.get(`/api/store/${storeId}`);
+            setStoreUrl(store.data.websiteUrl);
+        };
+        fetchStore();
+    }, [])
+
     return (
-        <Button type="default" onClick={deployProduction}>Deploy production</Button>
+        <>
+            {domain.length > 0 || storeUrl.length > 0
+                ? <Button size="large" type="primary"><a target="_blank" href={`https://${storeUrl || domain}` }>Visit Website</a></Button>
+                : <Button size="large" type="primary" onClick={deployProduction}>Deploy production</Button>}
+        </>
     )
 };

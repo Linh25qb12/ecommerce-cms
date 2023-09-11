@@ -1,0 +1,27 @@
+.graph-card {
+    .graph-card-title {
+        padding-left: 24px;
+        padding-bottom: 24px;
+    }
+    &.ant-card {
+        .ant-card-body {
+            padding: 12px 0 12px 0;
+        }
+    }
+}
+
+.store-card-group {
+    margin-bottom: 15px;
+    .data-card-title {
+        padding: 0 24px 12px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .data-display-text {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 32px;
+        padding-left: 24px;
+    }
+}

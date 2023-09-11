@@ -13,9 +13,10 @@ export default async function DashboardLayout({
         storeId: string,
     }
 }) {
-    const {userId} = auth();
 
-    if(!userId) {
+    const { userId } = auth();
+
+    if (!userId) {
         redirect('/sign-in');
     }
 
@@ -26,7 +27,7 @@ export default async function DashboardLayout({
         }
     });
 
-    if(!store) {
+    if (!store) {
         redirect('/');
     };
 
@@ -43,5 +44,5 @@ export default async function DashboardLayout({
                 {children}
             </div>
         </>
-    ); 
+    );
 }

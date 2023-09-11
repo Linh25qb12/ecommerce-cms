@@ -15,13 +15,15 @@ export async function POST(
         }
 
         if (!name) {
-            return new NextResponse('Name is required!', { status: 400 });
+            return new NextResponse('Missing required field!', { status: 400 });
         }
 
         const store = await prismadb.store.create({
             data: {
                 name,
                 userId,
+                connectId: '',
+                websiteUrl: '',
             }
         });
 

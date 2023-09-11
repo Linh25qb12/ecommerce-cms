@@ -24,7 +24,7 @@ export const Navbar = ({
     const itemList = [
 
         {
-            label: <Link href={`/${params.storeId}`}><b>Overview</b></Link>,
+            label: <Link href={`/${params.storeId}/dashboard`}><b>Overview</b></Link>,
             key: 'dashboard',
         },
         {
@@ -50,11 +50,7 @@ export const Navbar = ({
         {
             label: <Link href={`/${params.storeId}/order`}><b>Order</b></Link>,
             key: 'order',
-        },
-        {
-            label: <Link href={`/${params.storeId}/setting`}><b>Setting</b></Link>,
-            key: 'setting',
-        },
+        }
     ]
 
     return (

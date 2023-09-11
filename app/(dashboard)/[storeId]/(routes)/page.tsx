@@ -1,8 +1,6 @@
-import { DeployButton } from "@/component/deploy-button/deploy-button";
-import prismadb from "@/lib/prismadb";
+import { redirect } from "next/navigation";
 
-
-const DashboardPage = async ({
+const FirstPage = async ({
     params,
 }: {
     params: {
@@ -10,18 +8,7 @@ const DashboardPage = async ({
     },
 }) => {
 
-    const store = await prismadb.store.findFirst({
-        where: {
-            id: params.storeId,
-        }
-    });
+    redirect(`${params.storeId}/dashboard`);
+}
 
-    return (  
-        <div>
-            Active store: {store?.name}
-            <DeployButton />
-        </div>
-    );
-}   
- 
-export default DashboardPage;
+export default FirstPage;

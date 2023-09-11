@@ -7,9 +7,9 @@ export async function PATCH(
     { params }: { params: { storeId: string } }
 ) {
     try {
-        const {userId} = auth();   
+        const { userId } = auth();
         const body = await req.json();
-        const { name } = body; 
+        const { name, connectId, websiteUrl } = body;
 
         if (!userId) {
             return new NextResponse('Unauthorized', { status: 401 });
@@ -18,9 +18,9 @@ export async function PATCH(
         if (!name) {
             return new NextResponse('Name is required!', { status: 400 });
         }
-        
-        if( !params.storeId) {
-            return new NextResponse('Store ID is required!', {status: 400});
+
+        if (!params.storeId) {
+            return new NextResponse('Store ID is required!', { status: 400 });
         }
 
         const store = await prismadb.store.updateMany({
@@ -28,15 +28,17 @@ export async function PATCH(
                 id: params.storeId,
                 userId
             },
-            data : {
+            data: {
                 name,
+                connectId: connectId ? connectId : '',
+                websiteUrl: websiteUrl ? websiteUrl : '',
             }
         })
 
         return NextResponse.json(store);
 
 
-    }catch (error) {
+    } catch (error) {
         console.log('[STORE_PATCH]', error);
         return new NextResponse('Internal error', { status: 500 });
     }
@@ -47,14 +49,14 @@ export async function DELETE(
     { params }: { params: { storeId: string } }
 ) {
     try {
-        const {userId} = auth();   
+        const { userId } = auth();
 
         if (!userId) {
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        if( !params.storeId) {
-            return new NextResponse('Store ID is required!', {status: 400});
+        if (!params.storeId) {
+            return new NextResponse('Store ID is required!', { status: 400 });
         }
 
         const store = await prismadb.store.deleteMany({
@@ -67,8 +69,31 @@ export async function DELETE(
         return NextResponse.json(store);
 
 
-    }catch (error) {
+    } catch (error) {
         console.log('[STORE_DELETE]', error);
+        return new NextResponse('Internal error', { status: 500 });
+    }
+}
+
+export async function GET(
+    req: Request,
+    { params }: { params: { storeId: string } }
+) {
+
+    try {
+        if (!params.storeId) {
+            return new NextResponse('Store ID is required!', { status: 400 });
+        }
+
+        const store = await prismadb.store.findUnique({
+            where: {
+                id: params.storeId
+            }
+        })
+
+        return NextResponse.json(store);
+    } catch (error) {
+        console.log('[STORE_GET]', error);
         return new NextResponse('Internal error', { status: 500 });
     }
 }

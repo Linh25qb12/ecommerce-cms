@@ -10,7 +10,6 @@ import { AddBillboardModal } from "./add-billboard-modal";
 import { APIAlert } from "@/component/api-alert/api-alert";
 import { useOrigin } from "@/hook/useOrigin";
 import { useParams } from "next/navigation";
-import ErrorBoundary from "@/component/error-boundary/error-boundary";
 
 export const BillboardClient = ({ billboardList }: {    
     billboardList: Billboard[]
@@ -21,11 +20,11 @@ export const BillboardClient = ({ billboardList }: {
     const baseApi = `${origin}/api/${params.storeId}/billboard`;
 
     return (
-        <ErrorBoundary>
+        <>
             <div className="page-header-wrapper">
                 <Heading title={'Billboard List'} description="Manage billboard for your store" />
-                <Button onClick={() => addBillboardModalRef.current?.open()} size="large" type="primary"><PlusOutlined /> Add billboard</Button>
                 <AddBillboardModal ref={addBillboardModalRef} />
+                <Button onClick={() => addBillboardModalRef.current?.open()} size="large" type="primary"><PlusOutlined /> Add billboard</Button>
             </div>
             <Divider />
             <BillboardTable data={billboardList} />
@@ -36,6 +35,6 @@ export const BillboardClient = ({ billboardList }: {
             <APIAlert title='GET (Specific billboard)' description={`${baseApi}/{id}`} apiStatus="public"/>
             <APIAlert title='PATCH (Specific billboard)' description={`${baseApi}/{id}`} apiStatus="admin"/>
             <APIAlert title='DELETE (Specific billboard)' description={`${baseApi}/{id}`} apiStatus="admin"/>
-        </ErrorBoundary>
+        </>
     );
 }
