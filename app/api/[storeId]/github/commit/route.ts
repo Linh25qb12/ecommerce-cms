@@ -9,8 +9,6 @@ export async function POST(
     const body = await req.json();
     const { repoName } = body;
 
-    console.log(repoName);
-
     const koreFile = createKoreFile({
         adaptor: createGitHubAdaptor({
             owner: "Linh25qb12",

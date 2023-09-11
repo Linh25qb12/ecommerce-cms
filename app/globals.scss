@@ -8,6 +8,10 @@ body {
     background-color: #d3d3d396;
 }
 
+.ant-btn-primary {
+    box-shadow: none !important;
+}
+
 .footless-modal {
     .ant-modal-body {
         padding: 15px 15px 0 15px !important;

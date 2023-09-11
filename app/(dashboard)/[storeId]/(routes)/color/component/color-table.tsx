@@ -38,6 +38,15 @@ export const ColorTable = ({
     const router = useRouter();
     const params = useParams();
 
+    const onCopy = (id: string) => {
+        navigator.clipboard.writeText(id);
+        notification.success({
+            message: 'Color ID copied to the clipboard',
+            placement: "bottomRight",
+            duration: 2
+        })
+    }
+
     const columns: ColumnsType<Color> = [
         {
             title: 'Name',
@@ -72,7 +81,7 @@ export const ColorTable = ({
             render: (_, record, index) => {
                 return (
                     <div className='action-button'>
-                        <CopyOutlined style={{ color: '#4f91ff' }} />
+                        <CopyOutlined onClick={() => onCopy(record.id)} style={{ color: '#4f91ff' }} />
                         <EditOutlined onClick={() => editColorModalRef?.current.open()} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({

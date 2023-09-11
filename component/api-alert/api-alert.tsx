@@ -33,6 +33,7 @@ export const APIAlert = ({
             duration: 2
         })
     }
+    
     return (
         <Alert
             style={{ background: 'white', border: '1px solid #d3d3d3', marginTop: 20 }}

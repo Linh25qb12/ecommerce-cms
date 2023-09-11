@@ -23,6 +23,7 @@ export async function POST(
                 name,
                 userId,
                 connectId: '',
+                websiteUrl: '',
             }
         });
 
