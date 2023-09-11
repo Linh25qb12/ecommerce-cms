@@ -18,14 +18,21 @@ model Store {
     sizes      Size[]      @relation("StoreToSize")
     colors     Color[]     @relation("StoreToColor")
     orders     Order[]     @relation("StoreToOrder")
+    connectId  String
+    connect    Connect     @relation("ConnectToStore", fields: [connectId], references: [id])
     createdAt  DateTime    @default(now())
     updatedAt  DateTime    @updatedAt
+
+    @@index([connectId])
 }
 
 model Connect {
-    id String @id @default(uuid())
-    accountId String 
+    id        String   @id @default(uuid())
+    accountId String
     connectId String
+    stores    Store[]  @relation("ConnectToStore")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Billboard {
@@ -143,5 +150,3 @@ model Image {
 
     @@index([productId])
 }
-
-

@@ -34,7 +34,7 @@ export default async function DashboardLayout({
 
     const connectAccount = await prismadb.connect.findMany({
         where: {
-            accountId: user?.id,
+            accountId: userId,
         }
     });
 
