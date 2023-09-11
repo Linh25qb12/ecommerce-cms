@@ -40,6 +40,15 @@ export const CategoryTable = ({
     const router = useRouter();
     const params = useParams();
 
+    const onCopy = (id: string) => {
+        navigator.clipboard.writeText(id);
+        notification.success({
+            message: 'Category ID copied to the clipboard',
+            placement: "bottomRight",
+            duration: 2
+        })
+    }
+
     const columns: ColumnsType<Category> = [
         {
             title: 'Name',
@@ -71,13 +80,13 @@ export const CategoryTable = ({
             render: (_, record, index) => {
                 return (
                     <div className='action-button'>
-                        <CopyOutlined style={{ color: '#4f91ff' }} />
+                        <CopyOutlined onClick={() => onCopy(record.id)} style={{ color: '#4f91ff' }} />
                         <EditOutlined onClick={() => editCategoryModalRef?.current.open()} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({
                                 title: 'Delete category?',
                                 content: (
-                                    <p>Are you sure you want to delete this store?<br /> This action cannot be undone. </p>
+                                    <p>Are you sure you want to delete this category?<br /> This action cannot be undone. </p>
                                 ),
                                 onOk: async () => {
                                     try {

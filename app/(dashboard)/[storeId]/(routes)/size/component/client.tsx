@@ -4,10 +4,12 @@ import { Heading } from "@/component/content-header/content-heading";
 import { Button, Col, Divider } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import { useParams, useRouter } from "next/navigation";
-import { Billboard, Category, Size } from "@prisma/client";
+import { Size } from "@prisma/client";
 import { SizeTable } from "./size-table";
 import { AddSizeModal } from "./add-size-modal";
 import { useRef } from "react";
+import { useOrigin } from "@/hook/useOrigin";
+import { APIAlert } from "@/component/api-alert/api-alert";
 
 export const SizeClient = ({
     sizeList,
@@ -15,6 +17,9 @@ export const SizeClient = ({
     sizeList: Size[],
 }) => {
     const addSizeModalRef = useRef<any>(null);
+    const origin = useOrigin();
+    const params = useParams();
+    const baseApi = `${origin}/api/${params.storeId}/size`;
 
     return (
         <>
@@ -25,6 +30,12 @@ export const SizeClient = ({
             </div>
             <Divider />
             <SizeTable data={sizeList} />
+            <Heading title={'Category API'} description="Manage size API for your store" />
+            <APIAlert title='GET (Category List)   ' description={baseApi} apiStatus="public"/>
+            <APIAlert title='POST (New size)' description={baseApi} apiStatus="admin"/>    
+            <APIAlert title='GET (Specific size)' description={`${baseApi}/{id}`} apiStatus="public"/>
+            <APIAlert title='PATCH (Specific size)' description={`${baseApi}/{id}`} apiStatus="admin"/>
+            <APIAlert title='DELETE (Specific size)' description={`${baseApi}/{id}`} apiStatus="admin"/>
         </>
     );
 }

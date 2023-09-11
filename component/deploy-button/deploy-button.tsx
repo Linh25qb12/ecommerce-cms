@@ -21,6 +21,6 @@ export const DeployButton = ({ storeId, storeName, connectId }: { storeId: strin
     };
 
     return (
-        <Button type="default" onClick={deployProduction}>Deploy production</Button>
+        <Button size="large" type="primary" onClick={deployProduction}>Deploy production</Button>
     )
 };

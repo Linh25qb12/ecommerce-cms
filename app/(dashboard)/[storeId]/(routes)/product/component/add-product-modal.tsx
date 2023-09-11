@@ -108,15 +108,32 @@ export const AddProductModal = React.forwardRef(({
                                 onRemove={(url: string) => onRemoveImage(url)}
                             />
                         </Form.Item>
+                        <Form.Item
+                            label={<b>Product name</b>}
+                            name="name"
+                            rules={[{ required: true, message: 'Please input your product name!' }]}
+                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
+                        >
+                            <Input placeholder="Product name" size="large" />
+                        </Form.Item>
                         <Row gutter={8}>
                             <Col span={12} >
                                 <Form.Item
-                                    label={<b>Product name</b>}
-                                    name="name"
-                                    rules={[{ required: true, message: 'Please input your product name!' }]}
+                                    label={<b>Category</b>}
+                                    name="categoryId"
+                                    rules={[{ required: true, message: 'Please select product category!' }]}
                                     tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                                 >
-                                    <Input placeholder="Product name" size="large" />
+                                    <Select
+                                        placeholder="Category"
+                                        size="large"
+                                        options={categoryList.map((category: Category) => {
+                                            return {
+                                                label: category.name,
+                                                value: category.id,
+                                            }
+                                        })}
+                                    />
                                 </Form.Item>
                             </Col>
                             <Col span={12} >
@@ -130,23 +147,6 @@ export const AddProductModal = React.forwardRef(({
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Form.Item
-                            label={<b>Category</b>}
-                            name="categoryId"
-                            rules={[{ required: true, message: 'Please select product category!' }]}
-                            tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
-                        >
-                            <Select
-                                placeholder="Category"
-                                size="large"
-                                options={categoryList.map((category: Category) => {
-                                    return {
-                                        label: category.name,
-                                        value: category.id,
-                                    }
-                                })}
-                            />
-                        </Form.Item>
                         <Row gutter={8}>
                             <Col span={12}>
                                 <Form.Item
@@ -156,7 +156,7 @@ export const AddProductModal = React.forwardRef(({
                                     tooltip={{ title: 'Required field', icon: <InfoCircleOutlined /> }}
                                 >
                                     <Select
-                                        placeholder="Category"
+                                        placeholder="Color"
                                         size="large"
                                         options={colorList.map((color: Color) => {
                                             return {

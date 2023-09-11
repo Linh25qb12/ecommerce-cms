@@ -32,6 +32,15 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
+
+    const onCopy = (id: string) => {
+        navigator.clipboard.writeText(id);
+        notification.success({
+            message: 'Billboard ID copied to the clipboard',
+            placement: "bottomRight",
+            duration: 2
+        })
+    }
     
     const columns: ColumnsType<Billboard> = [
         {
@@ -58,7 +67,7 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
             render: (_, record, index) => {
                 return (
                     <div className='action-button'>
-                        <CopyOutlined style={{ color: '#4f91ff' }} />
+                        <CopyOutlined onClick={() => onCopy(record.id)} style={{ color: '#4f91ff' }} />
                         <EditOutlined onClick={() => {
                             editBillboardModalRef?.current.open(record)
                         }} style={{ color: 'green' }} />
