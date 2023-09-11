@@ -11,6 +11,7 @@ import { EditStoreModal } from "./edit-store-modal";
 import { Overview } from "@/component/overview/overview";
 import { APIAlert } from "@/component/api-alert/api-alert";
 import './component.scss';
+import { useOrigin } from "@/hook/useOrigin";
 
 export const DashboardClient = ({
     storeId,
@@ -31,6 +32,7 @@ export const DashboardClient = ({
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const params = useParams();
+    const origin = useOrigin();
     const editStoreModalRef = useRef<any>(null);
     const baseApi = `${origin}/api/store`;
 

@@ -30,6 +30,8 @@ export async function POST(
         }
     })
 
+    console.log(store);
+
     if (!store) {
         return new NextResponse('Store not found', { status: 500 });
     }
