@@ -60,7 +60,7 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
                 await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name });
                 const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
                 await axios.patch(`/api/store/${storeId}`, {
-                    connectId: connectList.data[0].id,
+                    connectId: connectList.data[0].connectId,
                     name: storeName,
                     websiteUrl: domain.data.domains[0].name
                 });
