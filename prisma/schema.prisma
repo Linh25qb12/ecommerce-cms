@@ -19,6 +19,7 @@ model Store {
     colors     Color[]     @relation("StoreToColor")
     orders     Order[]     @relation("StoreToOrder")
     connectId  String
+    websiteUrl String
     connect    Connect     @relation("ConnectToStore", fields: [connectId], references: [id])
     createdAt  DateTime    @default(now())
     updatedAt  DateTime    @updatedAt

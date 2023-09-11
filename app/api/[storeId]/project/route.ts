@@ -7,7 +7,6 @@ export async function POST(
 
     const body = await req.json();
     const { projectName } = body;
-    const vercelBearerKey = process.env.BEARER_KEY;
 
     const result = await fetch("https://api.vercel.com/v9/projects", {
         body: JSON.stringify({
@@ -29,7 +28,7 @@ export async function POST(
             skipGitConnectDuringLink: true,
         }),
         headers: {
-            "Authorization": `Bearer ${vercelBearerKey}`
+            "Authorization": `Bearer ${process.env.BEARER_KEY}`
         },
         method: "post"
     });
