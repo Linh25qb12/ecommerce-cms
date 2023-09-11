@@ -18,11 +18,19 @@ export async function POST(
     req: Request,
     { params }: { params: { storeId: string } }
 ) {
-    const { productIds } = await req.json();
+    const { productIds, storeUrl } = await req.json();
 
     if (!productIds || productIds.length === 0) {
         return new NextResponse('Product ids are required', { status: 400 });
     }
+
+    console.log(storeUrl);
+
+    const store = await prismadb.store.findUnique({
+        where: {
+            id: params.storeId,
+        }
+    })
 
     const products = await prismadb.product.findMany({
         where: {
@@ -63,6 +71,8 @@ export async function POST(
         }
     });
 
+    console.log(store?.connectId);
+
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: 'payment',
@@ -70,11 +80,13 @@ export async function POST(
         phone_number_collection: {
             enabled: true,
         },
-        success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-        cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
+        success_url: `${storeUrl}/cart?success=1`,
+        cancel_url: `${storeUrl}/cart?canceled=1`,
         metadata: {
             orderId: order.id
         },
+    }, {
+        stripeAccount: store?.connectId ? store?.connectId : 'acct_1NoiMQ4Wa3uhzrRd',
     });
 
     return NextResponse.json({ url: session.url }, {
