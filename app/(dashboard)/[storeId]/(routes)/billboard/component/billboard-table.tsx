@@ -21,7 +21,7 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
     return (
         <div className='table-header'>
             <h2 style={{ lineHeight: '32px' }}>{title}</h2>
-            <Search allowClear placeholder="input search text" onSearch={handleSearch} style={{ width: 200, height: 32 }} />
+            <Search allowClear placeholder="Input search text" onSearch={handleSearch} style={{ width: 200, height: 32 }} />
         </div>
     );
 };

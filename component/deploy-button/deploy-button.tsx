@@ -29,7 +29,6 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
                         try {
                             const account = await stripe.accounts.create({
                                 type: 'standard',
-                                email: 'doantuanlinh0@gmail.com'
                             });
                             await axios.post('/api/connect', {
                                 connectId: account.id

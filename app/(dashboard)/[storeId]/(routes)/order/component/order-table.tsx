@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Modal, Spin, Table, notification } from 'antd';
+import { Input, Spin, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Order, Product } from '@prisma/client';
+import { Order } from '@prisma/client';
 import { format } from 'date-fns';
-import { EditOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
-import './component.scss';
-import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
+import './component.scss';
 
 const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: string) => void }) => {
     const { Search } = Input;
@@ -20,7 +18,7 @@ const TableHeader = ({ title, onSearch }: { title: string, onSearch: (txt: strin
     return (
         <div className='table-header'>
             <h2>{title}</h2>
-            <Search allowClear placeholder="input search text" onSearch={handleSearch} style={{ width: 200, height: 32 }} />
+            <Search allowClear placeholder="Input search text" onSearch={handleSearch} style={{ width: 200, height: 32 }} />
         </div>
     );
 };
@@ -31,7 +29,7 @@ export const OrderTable = ({
     data: Order[],
 }) => {
     const [dataSource, setDataSource] = useState<Order[]>(data);
-    const [selectValue, setSelectValue] = useState<Order>();
+
     const editOrderModalRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -46,7 +44,7 @@ export const OrderTable = ({
                 return (
                     <>{text.map((orderItem: any) => orderItem.product.name).join(', ')}</>
                 );
-            } 
+            }
         },
         {
             title: 'Address',
@@ -75,7 +73,10 @@ export const OrderTable = ({
             dataIndex: 'isPaid',
             key: 'isPaid',
             render: (text) => {
-                return <>{text.toString()}</>
+                if (text === true) {
+                    return <Tag color="blue">TRUE</Tag>
+                }
+                return <Tag color="red">FALSE</Tag>
             }
         },
         {
@@ -104,13 +105,7 @@ export const OrderTable = ({
         <Spin spinning={loading}>
             <div className='custom-table-wrapper'>
                 <TableHeader onSearch={(txt) => onSearch(txt)} title='Order' />
-                <Table onRow={(record, rowIndex) => {
-                    return {
-                        onClick: (e) => {
-                            setSelectValue(record);
-                        }
-                    }
-                }} pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
+                <Table pagination={{ pageSize: 6, total: formatTotal }} columns={columns} dataSource={dataSource} />
             </div>
         </Spin>
     )
