@@ -11,7 +11,6 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
 
     const origin = useOrigin();
     const [domain, setDomain] = useState('');
-    const [projectId, setProjectId] = useState<string>('')
     const [storeUrl, setStoreUrl] = useState<string>('');
     const router = useRouter();
 
@@ -30,13 +29,14 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
                         try {
                             const account = await stripe.accounts.create({
                                 type: 'standard',
+                                email: 'doantuanlinh0@gmail.com'
                             });
                             await axios.post('/api/connect', {
                                 connectId: account.id
                             });
 
                             const accountLink = await stripe.accountLinks.create({
-                                account: 'acct_1Np8XE4WFXIHpULF',
+                                account: account.id,
                                 refresh_url: origin,
                                 return_url: origin,
                                 type: 'account_onboarding',
@@ -56,7 +56,6 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
             } else {
                 const githubRepo = await axios.post(`/api/${storeId}/github/repo`, { repoName: storeName });
                 const project = await axios.post(`/api/${storeId}/project`, { projectName: githubRepo.data.data.name.toLowerCase() });
-                setProjectId(project.data.id);
                 await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name });
                 const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
                 await axios.patch(`/api/store/${storeId}`, {
