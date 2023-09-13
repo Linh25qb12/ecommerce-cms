@@ -29,14 +29,6 @@ const DashboardPage = async ({
         }
     });
 
-    const connectAccount = await prismadb.connect.findMany({
-        where: {
-            accountId: userId,
-        }
-    });
-
-    console.log(connectAccount);
-
     const totalRevenue = await getTotalRevenue(params.storeId);
     const graphRevenue = await getGraphRevenue(params.storeId);
     const salesCount = await getSalesCount(params.storeId);

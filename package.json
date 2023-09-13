@@ -38,6 +38,7 @@
   "devDependencies": {
     "@types/react-highlight-words": "^0.16.4",
     "@types/uuid": "^9.0.2",
+    "encoding": "^0.1.13",
     "prisma": "^5.1.1"
   },
   "browser": {

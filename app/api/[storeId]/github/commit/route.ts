@@ -18,8 +18,12 @@ export async function POST(
         })
     });
 
-    const testFilePath = "Test";
-    await koreFile.writeFile(testFilePath, 'This is text file to force vercel deploy the production');
+    const testFilePath = "app/custom.scss";
 
-    return NextResponse.json('Commit success', {status: 200});
+    const input = `.ant-btn-primary {
+        box-shadow: none !important;
+    }`
+    await koreFile.writeFile(testFilePath, input);
+
+    return NextResponse.json('Commit success', { status: 200 });
 };

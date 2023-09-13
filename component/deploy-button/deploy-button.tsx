@@ -12,17 +12,16 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
     const origin = useOrigin();
     const [domain, setDomain] = useState('');
     const [storeUrl, setStoreUrl] = useState<string>('');
+    const [storeConnectId, setStoreConnectId] = useState('');
     const router = useRouter();
 
     const deployProduction = async () => {
         try {
-            const connectList = await axios.get('/api/connect');
-
-            if (connectList.data.length <= 0) {
+            if (storeConnectId.length <= 0) {
                 Modal.confirm({
-                    title: 'Stripe account create?',
+                    title: 'Before deploy production?',
                     content: (
-                        <p>You currently have not linked a payment method to your current account.<br />
+                        <p>You currently have not linked a payment method to your current store.<br />
                             Please create a stripe account to be able to perform all the functions of the website. </p>
                     ),
                     onOk: async () => {
@@ -30,10 +29,11 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
                             const account = await stripe.accounts.create({
                                 type: 'standard',
                             });
-                            await axios.post('/api/connect', {
-                                connectId: account.id
+                            await axios.patch(`/api/store/${storeId}`, {
+                                connectId: account.id,
+                                name: storeName,
+                                websiteUrl: ''
                             });
-
                             const accountLink = await stripe.accountLinks.create({
                                 account: account.id,
                                 refresh_url: origin,
@@ -58,7 +58,7 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
                 await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name });
                 const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
                 await axios.patch(`/api/store/${storeId}`, {
-                    connectId: connectList.data[0].connectId,
+                    connectId: storeConnectId,
                     name: storeName,
                     websiteUrl: domain.data.domains[0].name
                 });
@@ -75,6 +75,7 @@ export const DeployButton = ({ storeId, storeName }: { storeId: string, storeNam
         const fetchStore = async () => {
             const store = await axios.get(`/api/store/${storeId}`);
             setStoreUrl(store.data.websiteUrl);
+            setStoreConnectId(store.data.connectId);
         };
         fetchStore();
     }, [])
