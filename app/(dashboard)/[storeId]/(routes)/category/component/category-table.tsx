@@ -101,7 +101,7 @@ export const CategoryTable = ({
                                     } catch (error) {
                                         notification.error({
                                             message: 'Somthing went wrong!',
-                                            description: 'Make sure you removed all categories using this billboard first.',
+                                            description: 'Make sure no production using this category.',
                                             placement: "bottomRight",
                                             duration: 2
                                         })

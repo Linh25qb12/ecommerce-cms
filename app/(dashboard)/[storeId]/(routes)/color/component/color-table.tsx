@@ -94,7 +94,7 @@ export const ColorTable = ({
                                         setLoading(true)
                                         await axios.delete(`/api/${params.storeId}/color/${record.id}`);
                                         notification.success({
-                                            message: 'Delete category success!',
+                                            message: 'Delete color success!',
                                             placement: "bottomRight",
                                             duration: 2
                                         })
@@ -102,7 +102,7 @@ export const ColorTable = ({
                                     } catch (error) {
                                         notification.error({
                                             message: 'Somthing went wrong!',
-                                            description: 'Make sure you removed all categories using this billboard first.',
+                                            description: 'Make sure no production using this color.',
                                             placement: "bottomRight",
                                             duration: 2
                                         })

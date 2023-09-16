@@ -73,7 +73,7 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
                         }} style={{ color: 'green' }} />
                         <DeleteOutlined onClick={() => {
                             Modal.confirm({
-                                title: 'Delete size?',
+                                title: 'Delete billboard?',
                                 content: (
                                     <p>Are you sure you want to delete this billboard?<br /> This action cannot be undone. </p>
                                 ),
@@ -82,7 +82,7 @@ export const BillboardTable = ({ data }: { data: Billboard[] }) => {
                                         setLoading(true)
                                         await axios.delete(`/api/${params.storeId}/billboard/${record.id}`);
                                         notification.success({
-                                            message: 'Delete category success!',
+                                            message: 'Delete billboard success!',
                                             placement: "bottomRight",
                                             duration: 2
                                         })
