@@ -2,25 +2,34 @@ import { NextResponse } from "next/server";
 import { createKoreFile, createGitHubAdaptor } from "korefile";
 
 export async function POST(
-    req: Request,
-    { params }: { params: { storeId: string } }
+  req: Request,
+  { params }: { params: { storeId: string } }
 ) {
 
-    const body = await req.json();
-    const { repoName } = body;
+  const body = await req.json();
+  const { repoName, customStore } = body;
 
-    const koreFile = createKoreFile({
-        adaptor: createGitHubAdaptor({
-            owner: "Linh25qb12",
-            repo: repoName,
-            ref: "heads/main",
-            token: process.env.GITHUB_BEARER_KEY
-        })
-    });
+  const {
+    header_main,
+    header_contrast,
+    header_secondary,
+    container_main,
+    container_contrast,
+    container_secondary
+  } = customStore;
 
-    const testFilePath = "app/globals.scss";
+  const koreFile = createKoreFile({
+    adaptor: createGitHubAdaptor({
+      owner: "Linh25qb12",
+      repo: repoName,
+      ref: "heads/main",
+      token: process.env.GITHUB_BEARER_KEY
+    })
+  });
 
-    const input = `@tailwind base;
+  const testFilePath = "app/globals.scss";
+
+  const input = `@tailwind base;
     @tailwind components;
     @tailwind utilities;
     
@@ -28,12 +37,12 @@ export async function POST(
     body,
     :root {
       height: 100%;
-      --header-primary-color: white;
-      --header-contrast-color: black;
-      --header-secondary-color: gray;
-      --container-primary-color: black;
-      --container-contrast-color: white;
-      --container-secondary-color: rgb(218, 211, 211);
+      --header-primary-color: ${header_main};
+      --header-contrast-color: ${header_contrast};
+      --header-secondary-color: ${header_secondary};
+      --container-primary-color: ${container_main};
+      --container-contrast-color: ${container_contrast};
+      --container-secondary-color: ${container_secondary};
     }
     
     .custom-header,
@@ -104,7 +113,7 @@ export async function POST(
         color: var(--container-contrast-color);
       }
     }`
-    await koreFile.writeFile(testFilePath, input);
+  await koreFile.writeFile(testFilePath, input);
 
-    return NextResponse.json('Commit success', { status: 200 });
+  return NextResponse.json('Commit success', { status: 200 });
 };

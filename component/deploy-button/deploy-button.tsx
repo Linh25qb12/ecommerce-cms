@@ -61,20 +61,7 @@ export const DeployButton = ({
                     },
                 })
             } else {
-                // handleLoading(true);
-                // const githubRepo = await axios.post(`/api/${storeId}/github/repo`, { repoName: storeName });
-                // const project = await axios.post(`/api/${storeId}/project`, { projectName: githubRepo.data.data.name.toLowerCase() });
-                // await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name });
-                // const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
-                // await axios.patch(`/api/store/${storeId}`, {
-                //     connectId: storeConnectId,
-                //     name: storeName,
-                //     websiteUrl: domain.data.domains[0].name
-                // });
-
-                // setDomain(domain.data.domains[0].name)
                 customStoreModalRef.current.open();
-                // setTimeout(() => handleLoading(false), 2000);
             }
 
         } catch (error) {
@@ -85,19 +72,19 @@ export const DeployButton = ({
     const deployProject = async (value: any) => {
         try {
             const githubRepo = await axios.post(`/api/${storeId}/github/repo`, { repoName: storeName });
-            // const project = await axios.post(`/api/${storeId}/project`, { projectName: githubRepo.data.data.name.toLowerCase() });
-            await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name });
-            // const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
-            // await axios.patch(`/api/store/${storeId}`, {
-            //     connectId: storeConnectId,
-            //     name: storeName,
-            //     websiteUrl: domain.data.domains[0].name
-            // });
+            const project = await axios.post(`/api/${storeId}/project`, { projectName: githubRepo.data.data.name.toLowerCase() });
+            await axios.post(`/api/${storeId}/github/commit`, { repoName: githubRepo.data.data.name, customStore: value });
+            const domain = await axios.get(`/api/${storeId}/project/${project.data.id}`);
+            await axios.patch(`/api/store/${storeId}`, {
+                connectId: storeConnectId,
+                name: storeName,
+                websiteUrl: domain.data.domains[0].name
+            });
 
-            // setDomain(domain.data.domains[0].name)
+            setDomain(domain.data.domains[0].name)
         } catch(error) {
             console.log(error);
-        }
+        };
     };
 
     useEffect(() => {
