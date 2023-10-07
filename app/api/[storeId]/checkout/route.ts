@@ -19,6 +19,7 @@ export async function POST(
     { params }: { params: { storeId: string } }
 ) {
     const { productIds, storeUrl } = await req.json();
+    const userId = req.headers.get("X-USER-ID");
 
     if (!productIds || productIds.length === 0) {
         return new NextResponse('Product ids are required', { status: 400 });
@@ -71,7 +72,8 @@ export async function POST(
                         }
                     }
                 }))
-            }
+            },
+            userId: userId ? userId : ''
         }
     });
 

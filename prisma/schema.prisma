@@ -22,8 +22,25 @@ model Store {
   sizes      Size[]      @relation("StoreToSize")
   colors     Color[]     @relation("StoreToColor")
   orders     Order[]     @relation("StoreToOrder")
+  user       User[]      @relation("StoreToUser")
 
   @@index([connectId])
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  storeId   String
+  store     Store     @relation("StoreToUser", fields: [storeId], references: [id])
+  photo     String?   @default("default.png")
+  verified  Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  order     Order[]   @relation("UserToOrder")
+
+  @@index([storeId])
 }
 
 model Billboard {
@@ -85,12 +102,15 @@ model Order {
   isPaid     Boolean     @default(false)
   phone      String      @default("")
   address    String      @default("")
+  userId     String
+  user       User        @relation("UserToOrder", fields: [userId], references: [id]) 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[]
 
   @@index([storeId])
+  @@index([userId])
 }
 
 model OrderItem {
