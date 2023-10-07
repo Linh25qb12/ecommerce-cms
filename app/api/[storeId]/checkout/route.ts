@@ -31,8 +31,6 @@ export async function POST(
         }
     })
 
-    console.log(store);
-
     if (!store) {
         return new NextResponse('Store not found', { status: 500 });
     }
@@ -47,7 +45,7 @@ export async function POST(
 
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-    products.forEach((product) => {
+    products.forEach((product: any) => {
         line_items.push({
             quantity: 1,
             price_data: {
