@@ -32,6 +32,7 @@ export const CategoryClient = ({
             </div>
             <Divider />
             <CategoryTable data={categoryList} billboardList={billboardList} />
+            <Divider />
             <Heading title={'Category API'} description="Manage category API for your store" />
             <APIAlert title='GET (Category List)   ' description={baseApi} apiStatus="public"/>
             <APIAlert title='POST (New category)' description={baseApi} apiStatus="admin"/>    

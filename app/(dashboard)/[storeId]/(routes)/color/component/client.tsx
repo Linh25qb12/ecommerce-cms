@@ -30,6 +30,7 @@ export const ColorClient = ({
             </div>
             <Divider />
             <ColorTable data={colorList} />
+            <Divider />
             <Heading title={'Color API'} description="Manage color API for your store" />
             <APIAlert title='GET (Color List)   ' description={baseApi} apiStatus="public"/>
             <APIAlert title='POST (New color)' description={baseApi} apiStatus="admin"/>    

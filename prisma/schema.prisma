@@ -33,11 +33,11 @@ model User {
   email     String    @unique
   password  String
   storeId   String
-  store     Store     @relation("StoreToUser", fields: [storeId], references: [id])
   photo     String?   @default("default.png")
   verified  Boolean?  @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+  store     Store     @relation("StoreToUser", fields: [storeId], references: [id])
   order     Order[]   @relation("UserToOrder")
 
   @@index([storeId])
@@ -103,9 +103,9 @@ model Order {
   phone      String      @default("")
   address    String      @default("")
   userId     String
-  user       User        @relation("UserToOrder", fields: [userId], references: [id]) 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+  user       User        @relation("UserToOrder", fields: [userId], references: [id])
   store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[]
 

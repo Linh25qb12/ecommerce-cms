@@ -18,8 +18,7 @@ export async function POST(
     req: Request,
     { params }: { params: { storeId: string } }
 ) {
-    const { productIds, storeUrl } = await req.json();
-    const userId = req.headers.get("X-USER-ID");
+    const { productIds, storeUrl, userId } = await req.json();
 
     if (!productIds || productIds.length === 0) {
         return new NextResponse('Product ids are required', { status: 400 });

@@ -30,6 +30,7 @@ export const SizeClient = ({
             </div>
             <Divider />
             <SizeTable data={sizeList} />
+            <Divider />
             <Heading title={'Category API'} description="Manage size API for your store" />
             <APIAlert title='GET (Category List)   ' description={baseApi} apiStatus="public"/>
             <APIAlert title='POST (New size)' description={baseApi} apiStatus="admin"/>    

@@ -1,17 +1,31 @@
 import prismadb from "@/lib/prismadb";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
-    const userId = req.headers.get("X-USER-ID");
+export async function GET(
+    req: NextRequest,
+    { params }: { params: { storeId: string } }
+) {
+    try {
+        const userId = req.nextUrl.searchParams.get("user_id") as string;
+        console.log(params.storeId);
+        const orderList = await prismadb.order.findMany({
+            where: {
+                storeId: params.storeId,
+            },
+            include: {
+                orderItems: {
+                    include: {
+                        product: true,
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc',
+            }
+        })
 
-    if (!userId) {
-        return new NextResponse("You are not logged in, please provide token to gain access", { status: 401 });
+        return NextResponse.json(orderList);
+    } catch (error) {
+        console.log('ORDER_GET', error);
     }
-
-    const user = await prismadb.user.findUnique({ where: { id: userId } });
-
-    return NextResponse.json({
-        status: "success",
-        data: { user: { ...user, password: undefined } },
-    });
 }
