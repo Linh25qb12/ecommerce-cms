@@ -6,3 +6,13 @@
         align-items: center;
     }
 }
+
+.create-note {
+    border-radius: 5px;
+    padding: 10px;
+    background: rgb(234, 242, 255);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: start;
+    gap: 10px;
+}

@@ -18,7 +18,7 @@ export async function POST(
     req: Request,
     { params }: { params: { storeId: string } }
 ) {
-    const { productIds, storeUrl } = await req.json();
+    const { productIds, storeUrl, userId } = await req.json();
 
     if (!productIds || productIds.length === 0) {
         return new NextResponse('Product ids are required', { status: 400 });
@@ -29,8 +29,6 @@ export async function POST(
             id: params.storeId,
         }
     })
-
-    console.log(store);
 
     if (!store) {
         return new NextResponse('Store not found', { status: 500 });
@@ -46,7 +44,7 @@ export async function POST(
 
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-    products.forEach((product) => {
+    products.forEach((product: any) => {
         line_items.push({
             quantity: 1,
             price_data: {
@@ -71,7 +69,8 @@ export async function POST(
                         }
                     }
                 }))
-            }
+            },
+            userId: userId ? userId : ''
         }
     });
 

@@ -82,7 +82,7 @@ export const SizeTable = ({
                                         setLoading(true)
                                         await axios.delete(`/api/${params.storeId}/size/${record.id}`);
                                         notification.success({
-                                            message: 'Delete category success!',
+                                            message: 'Delete size success!',
                                             placement: "bottomRight",
                                             duration: 2
                                         })
@@ -90,7 +90,7 @@ export const SizeTable = ({
                                     } catch (error) {
                                         notification.error({
                                             message: 'Somthing went wrong!',
-                                            description: 'Make sure you removed all categories using this billboard first.',
+                                            description: 'Make sure no production using this size.',
                                             placement: "bottomRight",
                                             duration: 2
                                         })

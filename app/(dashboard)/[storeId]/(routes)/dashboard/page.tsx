@@ -6,8 +6,6 @@ import { getGraphRevenue } from "@/action/getGraphRevenue";
 import { getTotalRevenue } from "@/action/getTotalRevenue";
 import { getSalesCount } from "@/action/getSaleCount";
 import { getStockCount } from "@/action/getStockCount";
-import { stripe } from "@/lib/stripe";
-import { redirect } from "next/navigation";
 
 const DashboardPage = async ({
     params,
@@ -28,14 +26,6 @@ const DashboardPage = async ({
             id: params.storeId,
         }
     });
-
-    const connectAccount = await prismadb.connect.findMany({
-        where: {
-            accountId: userId,
-        }
-    });
-
-    console.log(connectAccount);
 
     const totalRevenue = await getTotalRevenue(params.storeId);
     const graphRevenue = await getGraphRevenue(params.storeId);

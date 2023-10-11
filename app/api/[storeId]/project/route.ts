@@ -20,6 +20,18 @@ export async function POST(
                     type: "encrypted",
                     value: `https://ecommerce-cms-ochre.vercel.app/api/${params.storeId}`,
                 },
+                {
+                    key: "JWT_SECRET_KEY",
+                    target: "production",
+                    type: "encrypted",
+                    value: 'my_ultra_secure_jwt_secret_key',
+                },
+                {
+                    key: "JWT_EXPIRES_IN",
+                    target: "production",
+                    type: "encrypted",
+                    value: '60',
+                },
             ],
             gitRepository: {
                 repo: `Linh25qb12/${projectName}`,
