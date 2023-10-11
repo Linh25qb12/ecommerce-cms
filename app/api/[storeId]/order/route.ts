@@ -6,8 +6,6 @@ export async function GET(
     { params }: { params: { storeId: string } }
 ) {
     try {
-        const userId = req.nextUrl.searchParams.get("user_id") as string;
-        console.log(params.storeId);
         const orderList = await prismadb.order.findMany({
             where: {
                 storeId: params.storeId,
@@ -15,7 +13,14 @@ export async function GET(
             include: {
                 orderItems: {
                     include: {
-                        product: true,
+                        product: {
+                            include: {
+                                images: true,
+                                color: true,
+                                category: true,
+                                size: true,
+                            }
+                        },
                     }
                 }
             },
