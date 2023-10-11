@@ -9,6 +9,7 @@ export async function GET(
         const orderList = await prismadb.order.findMany({
             where: {
                 storeId: params.storeId,
+                isPaid: true,
             },
             include: {
                 orderItems: {
